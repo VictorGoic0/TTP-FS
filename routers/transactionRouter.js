@@ -3,7 +3,7 @@ const authorization = require("./authorization.js");
 
 const db = require("../data/helpers/transactions-model.js");
 
-// Only GET by id and POST will actually be used, the rest are here just in case really.
+// Only GET by id and POST will actually be used, the rest are here just in case/for testing.
 
 router.get("/", async (req, res) => {
   try {

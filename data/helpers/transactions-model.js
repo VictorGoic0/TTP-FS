@@ -20,9 +20,7 @@ async function findById(id) {
 }
 
 async function findByUser(user_id) {
-  return db("transactions")
-    .where({ "transactions.user_id": user_id })
-    .first();
+  return db("transactions").where({ "transactions.user_id": user_id });
 }
 
 async function create(transaction) {

@@ -32,6 +32,7 @@ class Portfolio extends Component {
     e.preventDefault();
     // Make transaction
     console.log(transacInfo);
+    // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
     this.props.makeTransaction(transacInfo);
   };
 

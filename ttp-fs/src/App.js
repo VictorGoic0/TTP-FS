@@ -4,10 +4,12 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Portfolio from "./components/Portfolio";
 import Transactions from "./components/Transactions";
+import Navigation from "./components/Navigation";
 
 function App() {
   return (
     <div>
+      <Navigation />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route exact path="/" component={Portfolio} />

@@ -8,7 +8,7 @@ export const SIGN_UP_FAILURE = "SIGN_UP_FAILURE";
 export const signUp = userInfo => dispatch => {
   dispatch({ type: SIGN_UP });
   return axios
-    .post(`${endpoint}/auth/register/`, userInfo)
+    .post(`${endpoint}/api/auth/register/`, userInfo)
     .then(res => {
       dispatch({ type: SIGN_UP_SUCCESS, payload: res.data.token });
       localStorage.setItem("token", res.data.token);
@@ -29,7 +29,7 @@ export const SIGN_IN_FAILURE = "SIGN_IN_FAILURE";
 export const signIn = userInfo => dispatch => {
   dispatch({ type: SIGN_IN });
   return axios
-    .post(`${endpoint}/auth/login/`, userInfo)
+    .post(`${endpoint}/api/auth/login/`, userInfo)
     .then(res => {
       dispatch({ type: SIGN_IN_SUCCESS, payload: res.data.token });
       localStorage.setItem("token", res.data.token);

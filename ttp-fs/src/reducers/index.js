@@ -22,6 +22,7 @@ const initialState = {
   signedIn: localStorage.getItem("token") ? true : false,
   fetchingTransactions: false,
   transactions: [],
+  stockList: [],
   user: {},
   error: null
 };
@@ -76,6 +77,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         transactions: action.payload,
+        stockList: action.portfolio,
         fetchingTransactions: false
       };
     case GET_TRANSACTIONS_FAILURE:

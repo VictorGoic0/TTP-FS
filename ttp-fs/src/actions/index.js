@@ -52,7 +52,19 @@ export const getTransactions = user_id => dispatch => {
   axios
     .get(`${endpoint}/api/users/${user_id}/transactions`)
     .then(res => {
-      dispatch({ type: GET_TRANSACTIONS_SUCCESS, payload: res.data });
+      const payload = res.data;
+      const table = {};
+      const length = payload.length;
+      for (let i = 0; i < length; i++) {
+        const symbol = payload[i].symbol;
+        if (symbol in table) {
+          table[symbol].quantity += payload[i].quantity;
+        } else {
+          table[symbol] = payload[i];
+        }
+      }
+      const portfolio = Object.values(table);
+      dispatch({ type: GET_TRANSACTIONS_SUCCESS, payload, portfolio });
     })
     .catch(err => {
       dispatch({

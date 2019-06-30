@@ -11,7 +11,8 @@ class Portfolio extends Component {
         : localStorage.getItem("userID"),
       symbol: "",
       quantity: 0
-    }
+    },
+    prices: {}
   };
   componentDidMount() {
     const user_id = this.props.user.id
@@ -21,9 +22,46 @@ class Portfolio extends Component {
       this.props.fetchUser(user_id);
     }
     if (this.props.stockList.length === 0) {
-      this.props.getTransactions(user_id);
+      this.props
+        .getTransactions(user_id)
+        .then(res => {
+          this.fetchPrices();
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    } else if (this.props.stockList.length > 0) {
+      this.fetchPrices();
     }
   }
+
+  fetchPrices = () => {
+    // In order for the portfolio to display the most up to date price information, a request for that information must be made
+    const symbols = this.props.stockList.map(stock => stock.symbol);
+    axios
+      .get(
+        `https://api.iextrading.com/1.0/tops/last?symbols=${symbols.join(",")}`
+      )
+      .then(res => {
+        const results = res.data;
+        const table = {};
+        const length = results.length;
+        for (let i = 0; i < length; i++) {
+          if (results[i].symbol in table) {
+            continue;
+          } else {
+            table[results[i].symbol] = results[i].price;
+          }
+        }
+        this.setState({
+          ...this.state,
+          prices: table
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
 
   handleChanges = e => {
     this.setState({
@@ -36,12 +74,10 @@ class Portfolio extends Component {
 
   makeTransaction = (e, transacInfo) => {
     e.preventDefault();
-    // Make transaction
     console.log(transacInfo);
     // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
-    const balance = this.props.user.balance;
-    const quantity = this.state.transaction.quantity;
-    const symbol = this.state.transaction.symbol;
+    const { balance } = this.props.user; // User funds
+    const { quantity, symbol } = this.state.transaction;
     axios
       .get(`https://api.iextrading.com/1.0/tops?symbols=${symbol}`)
       .then(res => {
@@ -68,6 +104,7 @@ class Portfolio extends Component {
   render() {
     const { fetchingUser, user } = this.props;
     const { id, balance } = user;
+    console.log(this.state);
 
     if (fetchingUser || !id) {
       return <h1>Loading...</h1>;

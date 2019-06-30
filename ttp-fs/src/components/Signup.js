@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { signUp } from "../actions";
 
 class Signup extends Component {
   state = {
@@ -18,11 +20,23 @@ class Signup extends Component {
     });
   };
 
+  signUp = (e, userInfo) => {
+    e.preventDefault();
+    this.props
+      .signUp(userInfo)
+      .then(res => {
+        this.props.history.push("/");
+      })
+      .catch(err => {
+        alert(err);
+      });
+  };
+
   render() {
     return (
       <div className="register">
         <h1>Register</h1>
-        <form>
+        <form onSubmit={e => this.signUp(e, this.state.user)}>
           <input
             type="text"
             value={this.state.user.name}
@@ -31,7 +45,7 @@ class Signup extends Component {
             placeholder="name"
           />
           <input
-            type="text"
+            type="email"
             value={this.state.user.email}
             name="email"
             onChange={this.handleChanges}
@@ -54,4 +68,7 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+export default connect(
+  null,
+  { signUp }
+)(Signup);

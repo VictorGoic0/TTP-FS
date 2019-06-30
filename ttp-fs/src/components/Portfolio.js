@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser, makeTransaction } from "../actions";
+import { fetchUser, getTransactions, makeTransaction } from "../actions";
 import axios from "axios";
 
 class Portfolio extends Component {
@@ -14,9 +14,14 @@ class Portfolio extends Component {
     }
   };
   componentDidMount() {
+    const user_id = this.props.user.id
+      ? this.props.user.id
+      : localStorage.getItem("userID");
     if (!this.props.user.id) {
-      const user_id = localStorage.getItem("userID");
       this.props.fetchUser(user_id);
+    }
+    if (this.props.stockList.length === 0) {
+      this.props.getTransactions(user_id);
     }
   }
 
@@ -93,10 +98,11 @@ class Portfolio extends Component {
 const mapStateToProps = state => ({
   user: state.user,
   fetchingUser: state.fetchingUser,
+  stockList: state.stockList,
   error: state.error
 });
 
 export default connect(
   mapStateToProps,
-  { fetchUser, makeTransaction }
+  { fetchUser, makeTransaction, getTransactions }
 )(Portfolio);

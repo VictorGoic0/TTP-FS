@@ -1,4 +1,6 @@
 import axios from "axios";
+import axiosAuth from "../components/Authenticate";
+
 const endpoint = process.env.REACT_APP_BACKENDPOINT;
 
 export const SIGN_UP = "SIGN_UP";
@@ -49,7 +51,7 @@ export const GET_TRANSACTIONS_FAILURE = "GET_TRANSACTIONS_FAILURE";
 
 export const getTransactions = user_id => dispatch => {
   dispatch({ type: GET_TRANSACTIONS });
-  axios
+  return axiosAuth()
     .get(`${endpoint}/api/users/${user_id}/transactions`)
     .then(res => {
       const payload = res.data;
@@ -80,7 +82,7 @@ export const FETCH_USER_FAILURE = "FETCH_USER_FAILURE";
 
 export const fetchUser = user_id => dispatch => {
   dispatch({ type: FETCH_USER });
-  axios
+  axiosAuth()
     .get(`${endpoint}/api/users/${user_id}`)
     .then(res => {
       dispatch({ type: FETCH_USER_SUCCESS, payload: res.data });
@@ -99,7 +101,7 @@ export const MAKE_TRANSACTION_FAILURE = "MAKE_TRANSACTION_FAILURE";
 
 export const makeTransaction = transactionInfo => dispatch => {
   dispatch({ type: MAKE_TRANSACTION });
-  axios
+  axiosAuth()
     .post(`${endpoint}/api/transactions`, transactionInfo)
     .then(res => {
       dispatch({ type: MAKE_TRANSACTION_SUCCESS, payload: res.data });

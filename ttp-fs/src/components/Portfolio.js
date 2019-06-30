@@ -48,7 +48,11 @@ class Portfolio extends Component {
         const response = res.data;
         if (response.symbol) {
           if (balance >= quantity * response.lastSalePrice) {
-            this.props.makeTransaction(transacInfo);
+            const finalTransaction = { ...transacInfo };
+            finalTransaction.price = response.lastSalePrice;
+            finalTransaction.sector = response.sector;
+            finalTransaction.security_type = response.securityType;
+            this.props.makeTransaction(finalTransaction);
           } else {
             alert("You do not have enough funds.");
           }

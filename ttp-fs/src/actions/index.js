@@ -42,3 +42,22 @@ export const signIn = userInfo => dispatch => {
       });
     });
 };
+
+export const GET_TRANSACTIONS = "GET_TRANSACTIONS";
+export const GET_TRANSACTIONS_SUCCESS = "GET_TRANSACTIONS_SUCCESS";
+export const GET_TRANSACTIONS_FAILURE = "GET_TRANSACTIONS_FAILURE";
+
+export const getTransactions = user_id => dispatch => {
+  dispatch({ type: GET_TRANSACTIONS });
+  axios
+    .get(`${endpoint}/api/users/${user_id}/transactions`)
+    .then(res => {
+      dispatch({ type: GET_TRANSACTIONS_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      dispatch({
+        type: GET_TRANSACTIONS_FAILURE,
+        payload: `${err.message}. ${err.response.data.message}`
+      });
+    });
+};

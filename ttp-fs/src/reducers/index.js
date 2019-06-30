@@ -4,13 +4,18 @@ import {
   SIGN_UP_FAILURE,
   SIGN_IN,
   SIGN_IN_SUCCESS,
-  SIGN_IN_FAILURE
+  SIGN_IN_FAILURE,
+  GET_TRANSACTIONS,
+  GET_TRANSACTIONS_SUCCESS,
+  GET_TRANSACTIONS_FAILURE
 } from "../actions";
 
 const initialState = {
   signingIn: false,
   signingUp: false,
   signedIn: localStorage.getItem("token") ? true : false,
+  fetchingTransactions: false,
+  transactions: [],
   error: null
 };
 
@@ -52,6 +57,22 @@ const reducer = (state = initialState, action) => {
         ...state,
         signingIn: false,
         signedIn: false,
+        error: action.payload
+      };
+    case GET_TRANSACTIONS:
+      return {
+        ...state,
+        fetchingTransactions: true,
+        error: null
+      };
+    case GET_TRANSACTIONS_SUCCESS:
+      return {
+        transactions: action.payload,
+        fetchingTransactions: false
+      };
+    case GET_TRANSACTIONS_FAILURE:
+      return {
+        fetchingTransactions: false,
         error: action.payload
       };
 

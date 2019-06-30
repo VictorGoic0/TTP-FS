@@ -1,9 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-class Navigation extends Component {
-  render() {
-    return <div />;
-  }
-}
+const Navigation = () => {
+  return (
+    <nav>
+      <NavLink exact to="/">
+        Portfolio
+      </NavLink>
+      <NavLink to="/transactions">Transactions</NavLink>
+    </nav>
+  );
+};
 
 export default Navigation;

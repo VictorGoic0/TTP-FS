@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchUser, makeTransaction } from "../actions";
+import axios from "axios";
 
 class Portfolio extends Component {
   state = {
@@ -33,7 +34,26 @@ class Portfolio extends Component {
     // Make transaction
     console.log(transacInfo);
     // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
-    this.props.makeTransaction(transacInfo);
+    const balance = this.props.user.balance;
+    const quantity = this.state.transaction.quantity;
+    const symbol = this.state.transaction.symbol;
+    axios
+      .get(`https://api.iextrading.com/1.0/tops?symbols=${symbol}`)
+      .then(res => {
+        const response = res.data;
+        if (response.symbol) {
+          if (balance >= quantity * response.lastSalePrice) {
+            this.props.makeTransaction(transacInfo);
+          } else {
+            alert("You do not have enough funds.");
+          }
+        } else {
+          alert("Please enter a valid symbol.");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   render() {

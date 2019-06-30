@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser } from "../actions";
+import { fetchUser, makeTransaction } from "../actions";
 
 class Portfolio extends Component {
   state = {
@@ -32,6 +32,7 @@ class Portfolio extends Component {
     e.preventDefault();
     // Make transaction
     console.log(transacInfo);
+    this.props.makeTransaction(transacInfo);
   };
 
   render() {
@@ -76,5 +77,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchUser }
+  { fetchUser, makeTransaction }
 )(Portfolio);

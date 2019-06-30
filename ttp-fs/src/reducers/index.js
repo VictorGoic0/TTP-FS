@@ -10,7 +10,10 @@ import {
   GET_TRANSACTIONS_FAILURE,
   FETCH_USER,
   FETCH_USER_SUCCESS,
-  FETCH_USER_FAILURE
+  FETCH_USER_FAILURE,
+  MAKE_TRANSACTION,
+  MAKE_TRANSACTION_SUCCESS,
+  MAKE_TRANSACTION_FAILURE
 } from "../actions";
 
 const initialState = {
@@ -97,6 +100,24 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         fetchingUser: false,
+        error: action.payload
+      };
+    case MAKE_TRANSACTION:
+      return {
+        ...state,
+        makingTransaction: true,
+        error: null
+      };
+    case MAKE_TRANSACTION_SUCCESS:
+      return {
+        ...state,
+        makingTransaction: false,
+        transactions: [...state.transactions, action.payload]
+      };
+    case MAKE_TRANSACTION_FAILURE:
+      return {
+        ...state,
+        makingTransaction: false,
         error: action.payload
       };
 

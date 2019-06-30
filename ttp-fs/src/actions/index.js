@@ -80,3 +80,22 @@ export const fetchUser = user_id => dispatch => {
       });
     });
 };
+
+export const MAKE_TRANSACTION = "MAKE_TRANSACTION";
+export const MAKE_TRANSACTION_SUCCESS = "MAKE_TRANSACTION_SUCCESS";
+export const MAKE_TRANSACTION_FAILURE = "MAKE_TRANSACTION_FAILURE";
+
+export const makeTransaction = transactionInfo => dispatch => {
+  dispatch({ type: MAKE_TRANSACTION });
+  axios
+    .post(`${endpoint}/api/transactions`, transactionInfo)
+    .then(res => {
+      dispatch({ type: MAKE_TRANSACTION_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      dispatch({
+        type: MAKE_TRANSACTION_FAILURE,
+        payload: `${err.message}. ${err.response.data.message}`
+      });
+    });
+};

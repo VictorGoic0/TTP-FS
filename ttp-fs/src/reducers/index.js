@@ -13,7 +13,10 @@ import {
   FETCH_USER_FAILURE,
   MAKE_TRANSACTION,
   MAKE_TRANSACTION_SUCCESS,
-  MAKE_TRANSACTION_FAILURE
+  MAKE_TRANSACTION_FAILURE,
+  FETCH_PRICES,
+  FETCH_PRICES_SUCCESS,
+  FETCH_PRICES_FAILURE
 } from "../actions";
 
 const initialState = {
@@ -21,8 +24,10 @@ const initialState = {
   signingUp: false,
   signedIn: localStorage.getItem("token") ? true : false,
   fetchingTransactions: false,
+  fetchingPrices: false,
   transactions: [],
   stockList: [],
+  prices: {},
   user: {},
   error: null
 };
@@ -120,6 +125,24 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         makingTransaction: false,
+        error: action.payload
+      };
+    case FETCH_PRICES:
+      return {
+        ...state,
+        fetchingPrices: true,
+        error: null
+      };
+    case FETCH_PRICES_SUCCESS:
+      return {
+        ...state,
+        fetchingPrices: false,
+        prices: action.payload
+      };
+    case FETCH_PRICES_FAILURE:
+      return {
+        ...state,
+        fetchingPrices: false,
         error: action.payload
       };
 

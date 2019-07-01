@@ -113,3 +113,32 @@ export const makeTransaction = transactionInfo => dispatch => {
       });
     });
 };
+
+export const FETCH_PRICES = "FETCH_PRICES";
+export const FETCH_PRICES_SUCCESS = "FETCH_PRICES_SUCCESS";
+export const FETCH_PRICES_FAILURE = "FETCH_PRICES_FAILURE";
+
+export const fetchPrices = symbols => dispatch => {
+  dispatch({ type: FETCH_PRICES });
+  axios
+    .get(
+      `https://api.iextrading.com/1.0/tops/last?symbols=${symbols.join(",")}`
+    )
+    .then(res => {
+      const results = res.data;
+      const table = {};
+      const length = results.length;
+      for (let i = 0; i < length; i++) {
+        if (results[i].symbol in table) {
+          continue;
+        } else {
+          table[results[i].symbol] = results[i].price;
+        }
+      }
+      dispatch({ type: FETCH_PRICES_SUCCESS, payload: table });
+    })
+    .catch(err => {
+      console.error(err);
+      dispatch({ type: FETCH_PRICES_FAILURE, payload: err.message });
+    });
+};

@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser, getTransactions, makeTransaction } from "../actions";
+import {
+  fetchUser,
+  getTransactions,
+  makeTransaction,
+  fetchPrices
+} from "../actions";
 import axios from "axios";
 
 class Portfolio extends Component {
@@ -11,8 +16,7 @@ class Portfolio extends Component {
         : localStorage.getItem("userID"),
       symbol: "",
       quantity: 0
-    },
-    prices: {}
+    }
   };
   componentDidMount() {
     const user_id = this.props.user.id
@@ -38,29 +42,7 @@ class Portfolio extends Component {
   fetchPrices = () => {
     // In order for the portfolio to display the most up to date price information, a request for that information must be made
     const symbols = this.props.stockList.map(stock => stock.symbol);
-    axios
-      .get(
-        `https://api.iextrading.com/1.0/tops/last?symbols=${symbols.join(",")}`
-      )
-      .then(res => {
-        const results = res.data;
-        const table = {};
-        const length = results.length;
-        for (let i = 0; i < length; i++) {
-          if (results[i].symbol in table) {
-            continue;
-          } else {
-            table[results[i].symbol] = results[i].price;
-          }
-        }
-        this.setState({
-          ...this.state,
-          prices: table
-        });
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    this.props.fetchPrices(symbols);
   };
 
   handleChanges = e => {
@@ -105,6 +87,7 @@ class Portfolio extends Component {
     const { fetchingUser, user } = this.props;
     const { id, balance } = user;
     console.log(this.state);
+    console.log(this.props);
 
     if (fetchingUser || !id) {
       return <h1>Loading...</h1>;
@@ -140,10 +123,11 @@ const mapStateToProps = state => ({
   user: state.user,
   fetchingUser: state.fetchingUser,
   stockList: state.stockList,
+  prices: state.prices,
   error: state.error
 });
 
 export default connect(
   mapStateToProps,
-  { fetchUser, makeTransaction, getTransactions }
+  { fetchUser, makeTransaction, getTransactions, fetchPrices }
 )(Portfolio);

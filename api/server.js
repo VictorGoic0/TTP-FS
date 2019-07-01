@@ -16,4 +16,8 @@ server.use("/api/auth", authRouter);
 server.use("/api/transactions", transactionRouter);
 server.use("/api/users", authorization, usersRouter);
 
+server.get("/", (req, res) => {
+  res.status(200).send("API is up and running.");
+});
+
 module.exports = server;

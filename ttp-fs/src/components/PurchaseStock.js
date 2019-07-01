@@ -14,6 +14,15 @@ class PurchaseStock extends Component {
     }
   };
 
+  componentDidMount() {
+    const user_id = this.props.user.id
+      ? this.props.user.id
+      : localStorage.getItem("userID");
+    if (!this.props.user.id) {
+      this.props.fetchUser(user_id);
+    }
+  }
+
   handleChanges = e => {
     this.setState({
       transaction: {

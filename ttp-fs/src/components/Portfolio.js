@@ -14,9 +14,6 @@ class Portfolio extends Component {
     const user_id = this.props.user.id
       ? this.props.user.id
       : localStorage.getItem("userID");
-    if (!this.props.user.id) {
-      this.props.fetchUser(user_id);
-    }
     if (this.props.stockList.length === 0) {
       this.props
         .getTransactions(user_id)
@@ -50,16 +47,17 @@ class Portfolio extends Component {
     const { fetchingTransactions, fetchingPrices, stockList } = this.props;
 
     if (fetchingTransactions || fetchingPrices) {
+      console.log("fetching");
       return <h1>Loading...</h1>;
     } else {
       return (
         <>
           <div>
             {stockList.length > 0 ? (
-              <>(Portfolio ${this.portfolioValue()})</>
+              <>Portfolio ${this.portfolioValue()}</>
             ) : null}
             {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
-            {this.props.stockList.map(stock => (
+            {stockList.map(stock => (
               <Stock
                 key={stock.id}
                 stock={stock}
@@ -78,7 +76,7 @@ const mapStateToProps = state => ({
   user: state.user,
   fetchingUser: state.fetchingUser,
   fetchingTransactions: state.fetchingTransactions,
-  fetchingPrices: state.fetchPrices,
+  fetchingPrices: state.fetchingPrices,
   stockList: state.stockList,
   prices: state.prices,
   error: state.error

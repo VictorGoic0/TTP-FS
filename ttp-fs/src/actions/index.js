@@ -1,4 +1,6 @@
 import axios from "axios";
+import axiosAuth from "../components/Authenticate";
+
 const endpoint = process.env.REACT_APP_BACKENDPOINT;
 
 export const SIGN_UP = "SIGN_UP";
@@ -49,10 +51,22 @@ export const GET_TRANSACTIONS_FAILURE = "GET_TRANSACTIONS_FAILURE";
 
 export const getTransactions = user_id => dispatch => {
   dispatch({ type: GET_TRANSACTIONS });
-  axios
+  return axiosAuth()
     .get(`${endpoint}/api/users/${user_id}/transactions`)
     .then(res => {
-      dispatch({ type: GET_TRANSACTIONS_SUCCESS, payload: res.data });
+      const payload = res.data;
+      const table = {};
+      const length = payload.length;
+      for (let i = 0; i < length; i++) {
+        const symbol = payload[i].symbol;
+        if (symbol in table) {
+          table[symbol].quantity += payload[i].quantity;
+        } else {
+          table[symbol] = payload[i];
+        }
+      }
+      const portfolio = Object.values(table);
+      dispatch({ type: GET_TRANSACTIONS_SUCCESS, payload, portfolio });
     })
     .catch(err => {
       dispatch({
@@ -68,7 +82,7 @@ export const FETCH_USER_FAILURE = "FETCH_USER_FAILURE";
 
 export const fetchUser = user_id => dispatch => {
   dispatch({ type: FETCH_USER });
-  axios
+  axiosAuth()
     .get(`${endpoint}/api/users/${user_id}`)
     .then(res => {
       dispatch({ type: FETCH_USER_SUCCESS, payload: res.data });
@@ -87,7 +101,7 @@ export const MAKE_TRANSACTION_FAILURE = "MAKE_TRANSACTION_FAILURE";
 
 export const makeTransaction = transactionInfo => dispatch => {
   dispatch({ type: MAKE_TRANSACTION });
-  axios
+  axiosAuth()
     .post(`${endpoint}/api/transactions`, transactionInfo)
     .then(res => {
       dispatch({ type: MAKE_TRANSACTION_SUCCESS, payload: res.data });
@@ -97,5 +111,34 @@ export const makeTransaction = transactionInfo => dispatch => {
         type: MAKE_TRANSACTION_FAILURE,
         payload: `${err.message}. ${err.response.data.message}`
       });
+    });
+};
+
+export const FETCH_PRICES = "FETCH_PRICES";
+export const FETCH_PRICES_SUCCESS = "FETCH_PRICES_SUCCESS";
+export const FETCH_PRICES_FAILURE = "FETCH_PRICES_FAILURE";
+
+export const fetchPrices = symbols => dispatch => {
+  dispatch({ type: FETCH_PRICES });
+  axios
+    .get(
+      `https://api.iextrading.com/1.0/tops/last?symbols=${symbols.join(",")}`
+    )
+    .then(res => {
+      const results = res.data;
+      const table = {};
+      const length = results.length;
+      for (let i = 0; i < length; i++) {
+        if (results[i].symbol in table) {
+          continue;
+        } else {
+          table[results[i].symbol] = results[i].price;
+        }
+      }
+      dispatch({ type: FETCH_PRICES_SUCCESS, payload: table });
+    })
+    .catch(err => {
+      console.error(err);
+      dispatch({ type: FETCH_PRICES_FAILURE, payload: err.message });
     });
 };

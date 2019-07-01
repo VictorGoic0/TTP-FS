@@ -35,7 +35,9 @@ class Portfolio extends Component {
           console.error(err);
         });
     } else if (this.props.stockList.length > 0) {
-      this.fetchPrices();
+      if (Object.keys(this.props.prices) === 0) {
+        this.fetchPrices();
+      }
     }
   }
 
@@ -83,19 +85,29 @@ class Portfolio extends Component {
       });
   };
 
-  render() {
-    const { fetchingUser, user } = this.props;
-    const { id, balance } = user;
-    console.log(this.state);
-    console.log(this.props);
+  portfolioValue = () => {
+    const prices = this.props.stockList.map(stock => {
+      return stock.quantity * this.props.prices[stock.symbol];
+    });
+    return prices.reduce((acc, curr) => acc + curr);
+  };
 
-    if (fetchingUser || !id) {
+  render() {
+    const {
+      fetchingUser,
+      fetchingTransactions,
+      fetchingPrices,
+      user
+    } = this.props;
+    const { id, balance } = user;
+
+    if (fetchingUser || fetchingTransactions || fetchingPrices || !id) {
       return <h1>Loading...</h1>;
     } else {
       return (
         <>
           <div>
-            Portfolio $Total Value
+            Portfolio (${this.portfolioValue()})
             {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
           </div>
           <div>
@@ -130,6 +142,8 @@ class Portfolio extends Component {
 const mapStateToProps = state => ({
   user: state.user,
   fetchingUser: state.fetchingUser,
+  fetchingTransactions: state.fetchingTransactions,
+  fetchingPrices: state.fetchPrices,
   stockList: state.stockList,
   prices: state.prices,
   error: state.error

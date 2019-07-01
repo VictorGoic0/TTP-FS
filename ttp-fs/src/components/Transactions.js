@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getTransactions } from "../actions";
+import Transaction from "./Transaction";
 
 class Transactions extends Component {
   componentDidMount() {
@@ -10,12 +11,24 @@ class Transactions extends Component {
   }
 
   render() {
-    return <div />;
+    const { transactions, fetchingTransactions } = this.props;
+    if (fetchingTransactions) {
+      return <h1>Loading...</h1>;
+    } else {
+      return (
+        <div className="transactions">
+          {transactions.map(transaction => (
+            <Transaction key={transaction.id} transaction={transaction} />
+          ))}
+        </div>
+      );
+    }
   }
 }
 
 const mapStateToProps = state => ({
   transactions: state.transactions,
+  fetchingTransactions: state.fetchingTransactions,
   error: state.error
 });
 

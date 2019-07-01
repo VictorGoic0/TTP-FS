@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signIn } from "../actions";
+import { Link } from "react-router-dom";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 class Login extends Component {
   state = {
@@ -35,26 +38,32 @@ class Login extends Component {
   render() {
     return (
       <div className="login">
-        <h1>Sign In</h1>
+        <h1>VGX Trading</h1>
+        <h1>Log In</h1>
         <form onSubmit={e => this.signIn(e, this.state.user)}>
-          <input
+          <TextField
             type="text"
             value={this.state.user.email}
             name="email"
             onChange={this.handleChanges}
-            placeholder="email"
+            label="Email"
           />
-          <input
+          <TextField
             type="password"
             value={this.state.user.password}
             name="password"
             onChange={this.handleChanges}
-            placeholder="Password"
+            label="Password"
           />
-          <button>Sign In</button>
+          <Button type="submit" variant="contained">
+            Sign In
+          </Button>
         </form>
         <h3>
-          Don't Have An Account? <span>Sign Up</span>
+          Don't Have An Account?{" "}
+          <Link to="/signup">
+            <span>Sign Up</span>
+          </Link>
         </h3>
       </div>
     );

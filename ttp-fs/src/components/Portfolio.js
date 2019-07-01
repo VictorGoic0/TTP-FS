@@ -1,30 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  fetchUser,
-  getTransactions,
-  makeTransaction,
-  fetchPrices
-} from "../actions";
-import axios from "axios";
+import { getTransactions, fetchPrices } from "../actions";
+import Stock from "./Stock";
+import PurchaseStock from "./PurchaseStock";
 
 class Portfolio extends Component {
-  state = {
-    transaction: {
-      user_id: this.props.user.id
-        ? this.props.user.id
-        : localStorage.getItem("userID"),
-      symbol: "",
-      quantity: 0
-    }
-  };
   componentDidMount() {
     const user_id = this.props.user.id
       ? this.props.user.id
       : localStorage.getItem("userID");
-    if (!this.props.user.id) {
-      this.props.fetchUser(user_id);
-    }
     if (this.props.stockList.length === 0) {
       this.props
         .getTransactions(user_id)
@@ -35,7 +19,9 @@ class Portfolio extends Component {
           console.error(err);
         });
     } else if (this.props.stockList.length > 0) {
-      this.fetchPrices();
+      if (Object.keys(this.props.prices) === 0) {
+        this.fetchPrices();
+      }
     }
   }
 
@@ -45,81 +31,36 @@ class Portfolio extends Component {
     this.props.fetchPrices(symbols);
   };
 
-  handleChanges = e => {
-    this.setState({
-      transaction: {
-        ...this.state.transaction,
-        [e.target.name]: e.target.value
-      }
+  portfolioValue = () => {
+    const prices = this.props.stockList.map(stock => {
+      return stock.quantity * this.props.prices[stock.symbol];
     });
-  };
-
-  makeTransaction = (e, transacInfo) => {
-    e.preventDefault();
-    console.log(transacInfo);
-    // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
-    const { balance } = this.props.user; // User funds
-    const { quantity, symbol } = this.state.transaction;
-    axios
-      .get(`https://api.iextrading.com/1.0/tops?symbols=${symbol}`)
-      .then(res => {
-        const response = res.data;
-        if (response.symbol) {
-          if (balance >= quantity * response.lastSalePrice) {
-            const finalTransaction = { ...transacInfo };
-            finalTransaction.price = response.lastSalePrice;
-            finalTransaction.sector = response.sector;
-            finalTransaction.security_type = response.securityType;
-            this.props.makeTransaction(finalTransaction);
-          } else {
-            alert("You do not have enough funds.");
-          }
-        } else {
-          alert("Please enter a valid symbol.");
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    return prices.reduce((acc, curr) => acc + curr);
   };
 
   render() {
-    const { fetchingUser, user } = this.props;
-    const { id, balance } = user;
-    console.log(this.state);
-    console.log(this.props);
+    const { fetchingTransactions, fetchingPrices, stockList } = this.props;
 
-    if (fetchingUser || !id) {
+    if (fetchingTransactions || fetchingPrices) {
+      console.log("fetching");
       return <h1>Loading...</h1>;
     } else {
       return (
         <>
-          <div>
-            Portfolio $Total Value
+          <div className="portfolio">
+            {stockList.length > 0 ? (
+              <h2>Portfolio ${this.portfolioValue()}</h2>
+            ) : (
+              <h1>You do not own any stock yet</h1>
+            )}
             {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
-          </div>
-          <div>
-            <h2>Balance:</h2>
-            <h2>${balance.toFixed(2)}</h2>
-            <form
-              onSubmit={e => this.makeTransaction(e, this.state.transaction)}
-            >
-              <input
-                type="text"
-                value={this.state.transaction.symbol}
-                name="symbol"
-                placeholder="Symbol"
-                onChange={this.handleChanges}
+            {stockList.map(stock => (
+              <Stock
+                key={stock.id}
+                stock={stock}
+                price={this.props.prices[stock.symbol]}
               />
-              <input
-                type="number"
-                value={this.state.transaction.quantity}
-                name="quantity"
-                placeeholder="Quantity"
-                onChange={this.handleChanges}
-              />
-              <button type="submit">BUY</button>
-            </form>
+            ))}
           </div>
         </>
       );
@@ -129,7 +70,8 @@ class Portfolio extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  fetchingUser: state.fetchingUser,
+  fetchingTransactions: state.fetchingTransactions,
+  fetchingPrices: state.fetchingPrices,
   stockList: state.stockList,
   prices: state.prices,
   error: state.error
@@ -137,5 +79,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchUser, makeTransaction, getTransactions, fetchPrices }
+  { getTransactions, fetchPrices }
 )(Portfolio);

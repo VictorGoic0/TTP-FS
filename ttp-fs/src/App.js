@@ -4,8 +4,10 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Portfolio from "./components/Portfolio";
 import Transactions from "./components/Transactions";
+import PurchaseStock from "./components/PurchaseStock";
 import Navigation from "./components/Navigation";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App(props) {
   return (
@@ -16,8 +18,10 @@ function App(props) {
       )}
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route exact path="/" component={Portfolio} />
-      <Route path="/transactions" component={Transactions} />
+      <Route path="/*" render={() => <Redirect to="/" />} />
+      <PrivateRoute exact path="/" component={Portfolio} />
+      <PrivateRoute path="/transactions" component={Transactions} />
+      <PrivateRoute path="/purchase" component={PurchaseStock} />
     </div>
   );
 }

@@ -1,7 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 
 const Stock = props => {
-  console.log(props);
   const { price } = props;
   const { symbol, quantity } = props.stock;
   return (
@@ -13,4 +12,4 @@ const Stock = props => {
   );
 };
 
-export default Stock;
+export default memo(Stock);

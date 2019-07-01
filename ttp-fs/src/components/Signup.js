@@ -37,8 +37,9 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="register">
-        <h1>Register</h1>
+      <div className="signup">
+        <h1>VGX Trading</h1>
+        <h1>Sign Up</h1>
         <form onSubmit={e => this.signUp(e, this.state.user)}>
           <TextField
             type="text"

@@ -93,27 +93,35 @@ class Portfolio extends Component {
       return <h1>Loading...</h1>;
     } else {
       return (
-        <div>
-          <h2>Balance:</h2>
-          <h2>${balance.toFixed(2)}</h2>
-          <form onSubmit={e => this.makeTransaction(e, this.state.transaction)}>
-            <input
-              type="text"
-              value={this.state.transaction.symbol}
-              name="symbol"
-              placeholder="Symbol"
-              onChange={this.handleChanges}
-            />
-            <input
-              type="number"
-              value={this.state.transaction.quantity}
-              name="quantity"
-              placeeholder="Quantity"
-              onChange={this.handleChanges}
-            />
-            <button type="submit">BUY</button>
-          </form>
-        </div>
+        <>
+          <div>
+            Portfolio $Total Value
+            {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
+          </div>
+          <div>
+            <h2>Balance:</h2>
+            <h2>${balance.toFixed(2)}</h2>
+            <form
+              onSubmit={e => this.makeTransaction(e, this.state.transaction)}
+            >
+              <input
+                type="text"
+                value={this.state.transaction.symbol}
+                name="symbol"
+                placeholder="Symbol"
+                onChange={this.handleChanges}
+              />
+              <input
+                type="number"
+                value={this.state.transaction.quantity}
+                name="quantity"
+                placeeholder="Quantity"
+                onChange={this.handleChanges}
+              />
+              <button type="submit">BUY</button>
+            </form>
+          </div>
+        </>
       );
     }
   }

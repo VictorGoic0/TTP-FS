@@ -6,6 +6,7 @@ import {
   makeTransaction,
   fetchPrices
 } from "../actions";
+import Stock from "./Stock";
 import axios from "axios";
 
 class Portfolio extends Component {
@@ -109,6 +110,13 @@ class Portfolio extends Component {
           <div>
             Portfolio (${this.portfolioValue()})
             {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
+            {this.props.stockList.map(stock => (
+              <Stock
+                key={stock.id}
+                stock={stock}
+                price={this.props.prices[stock.symbol]}
+              />
+            ))}
           </div>
           <div>
             <h2>Balance:</h2>

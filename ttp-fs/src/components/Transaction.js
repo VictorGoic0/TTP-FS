@@ -2,7 +2,6 @@ import React, { memo } from "react";
 
 const Transaction = props => {
   const { symbol, quantity, price } = props.transaction;
-  console.log(props);
   return (
     <div>
       <h3>{symbol}</h3>

@@ -62,7 +62,7 @@ export const getTransactions = user_id => dispatch => {
         if (symbol in table) {
           table[symbol].quantity += payload[i].quantity;
         } else {
-          table[symbol] = payload[i];
+          table[symbol] = { ...payload[i] };
         }
       }
       const portfolio = Object.values(table);

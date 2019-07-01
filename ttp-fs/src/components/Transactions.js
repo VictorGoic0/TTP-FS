@@ -16,7 +16,7 @@ class Transactions extends Component {
       return <h1>Loading...</h1>;
     } else {
       return (
-        <div>
+        <div className="transactions">
           {transactions.map(transaction => (
             <Transaction key={transaction.id} transaction={transaction} />
           ))}

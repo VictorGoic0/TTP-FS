@@ -68,7 +68,7 @@ class PurchaseStock extends Component {
       return <h1>Loading...</h1>;
     } else {
       return (
-        <div>
+        <div className="purchase">
           <h2>Balance:</h2>
           <h2>${balance.toFixed(2)}</h2>
           <form onSubmit={e => this.makeTransaction(e, this.state.transaction)}>

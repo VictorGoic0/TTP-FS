@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Portfolio from "./components/Portfolio";
 import Transactions from "./components/Transactions";
+import PurchaseStock from "./components/PurchaseStock";
 import Navigation from "./components/Navigation";
 import { withRouter, Redirect } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
@@ -20,6 +21,7 @@ function App(props) {
       <Route path="/*" render={() => <Redirect to="/" />} />
       <PrivateRoute exact path="/" component={Portfolio} />
       <PrivateRoute path="/transactions" component={Transactions} />
+      <PrivateRoute path="/purchase" component={PurchaseStock} />
     </div>
   );
 }

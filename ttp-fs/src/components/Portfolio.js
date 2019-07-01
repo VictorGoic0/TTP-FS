@@ -47,9 +47,9 @@ class Portfolio extends Component {
     } else {
       return (
         <>
-          <div>
+          <div className="portfolio">
             {stockList.length > 0 ? (
-              <>Portfolio ${this.portfolioValue()}</>
+              <h2>Portfolio ${this.portfolioValue()}</h2>
             ) : (
               <h1>You do not own any stock yet</h1>
             )}
@@ -62,7 +62,6 @@ class Portfolio extends Component {
               />
             ))}
           </div>
-          <PurchaseStock />
         </>
       );
     }

@@ -41,8 +41,8 @@ class PurchaseStock extends Component {
     axios
       .get(`https://api.iextrading.com/1.0/tops?symbols=${symbol}`)
       .then(res => {
-        const response = res.data;
-        if (response.symbol) {
+        const response = res.data[0];
+        if (response) {
           if (balance >= quantity * response.lastSalePrice) {
             const finalTransaction = { ...transacInfo };
             finalTransaction.price = response.lastSalePrice;

@@ -140,3 +140,8 @@ body {
   /* 1rem === 10px @ medium browser settings */
   font-family: sans-serif;
 }
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}

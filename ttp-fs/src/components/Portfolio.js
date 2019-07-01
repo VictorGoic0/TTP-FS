@@ -1,11 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  fetchUser,
-  getTransactions,
-  makeTransaction,
-  fetchPrices
-} from "../actions";
+import { getTransactions, fetchPrices } from "../actions";
 import Stock from "./Stock";
 import PurchaseStock from "./PurchaseStock";
 
@@ -55,7 +50,9 @@ class Portfolio extends Component {
           <div>
             {stockList.length > 0 ? (
               <>Portfolio ${this.portfolioValue()}</>
-            ) : null}
+            ) : (
+              <h1>You do not own any stock yet</h1>
+            )}
             {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
             {stockList.map(stock => (
               <Stock
@@ -74,7 +71,6 @@ class Portfolio extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  fetchingUser: state.fetchingUser,
   fetchingTransactions: state.fetchingTransactions,
   fetchingPrices: state.fetchingPrices,
   stockList: state.stockList,
@@ -84,5 +80,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchUser, makeTransaction, getTransactions, fetchPrices }
+  { getTransactions, fetchPrices }
 )(Portfolio);

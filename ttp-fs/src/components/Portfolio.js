@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getTransactions, fetchPrices } from "../actions";
 import Stock from "./Stock";
-import PurchaseStock from "./PurchaseStock";
 
 class Portfolio extends Component {
   componentDidMount() {

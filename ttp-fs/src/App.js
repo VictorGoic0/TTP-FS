@@ -11,7 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 
 function App(props) {
   return (
-    <div>
+    <div className="app-container">
       {props.location.pathname === "/login" ||
       props.location.pathname === "/signup" ? null : (
         <Navigation />

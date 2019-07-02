@@ -2,6 +2,7 @@ const router = require("express").Router();
 const authorization = require("./authorization.js");
 
 const db = require("../data/helpers/transactions-model.js");
+const Users = require("../data/helpers/users-model.js");
 
 // Only GET by id and POST will actually be used, the rest are here just in case/for testing.
 
@@ -36,10 +37,19 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", authorization, async (req, res) => {
   const transaction = req.body;
+  const { user_id, quantity, price } = transaction;
+  const total = quantity * price;
   try {
     const newTransaction = await db.create(transaction);
     if (newTransaction) {
-      res.status(201).json(newTransaction);
+      const user = await Users.findById(user_id);
+      const updatedUser = await Users.update(
+        { balance: user.balance - total },
+        user_id
+      );
+      if (updatedUser) {
+        res.status(201).json(newTransaction);
+      }
     }
   } catch (error) {
     res

@@ -1,4 +1,8 @@
 .portfolio {
+  width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   h1 {
     font-size: 3rem;
   }
@@ -6,6 +10,12 @@
     font-size: 2.8rem;
   }
   .stock {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
     h3 {
       font-size: 2.6rem;
     }

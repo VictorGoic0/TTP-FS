@@ -1,5 +1,17 @@
 .transactions {
+  width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   h3 {
     font-size: 2.4rem;
+  }
+  .transaction {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
   }
 }

@@ -34,7 +34,6 @@ class PurchaseStock extends Component {
 
   makeTransaction = (e, transacInfo) => {
     e.preventDefault();
-    console.log(transacInfo);
     // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
     const { balance } = this.props.user; // User funds
     const { quantity, symbol } = this.state.transaction;
@@ -45,6 +44,7 @@ class PurchaseStock extends Component {
         if (response) {
           if (balance >= quantity * response.lastSalePrice) {
             const finalTransaction = { ...transacInfo };
+            finalTransaction.quantity = Number(quantity)
             finalTransaction.price = response.lastSalePrice;
             finalTransaction.sector = response.sector;
             finalTransaction.security_type = response.securityType;

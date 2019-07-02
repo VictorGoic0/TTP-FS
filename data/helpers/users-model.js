@@ -43,6 +43,6 @@ async function remove(id) {
 async function update(updates, id) {
   const [editedUser] = await db("users")
     .where({ id })
-    .update(updates);
+    .update(updates).returning("*")
   return editedUser;
 }

@@ -1,7 +1,11 @@
-import React from "react";
+import React, {memo} from "react";
 import { NavLink } from "react-router-dom";
 
-const Navigation = () => {
+const Navigation = props => {
+  const logOut = () => {
+    localStorage.clear();
+    props.history.push('/login')
+  }
   return (
     <nav className="navigation">
       <NavLink exact to="/">
@@ -9,8 +13,9 @@ const Navigation = () => {
       </NavLink>
       <NavLink to="/transactions">Transactions</NavLink>
       <NavLink to="/purchase">Buy Stock</NavLink>
+      <a onClick={logOut}>Log Out</a>
     </nav>
   );
 };
 
-export default Navigation;
+export default memo(Navigation);

@@ -14,7 +14,7 @@ function App(props) {
     <div className="app-container">
       {props.location.pathname === "/login" ||
       props.location.pathname === "/signup" ? null : (
-        <Navigation />
+        <Navigation history={props.history}/>
       )}
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />

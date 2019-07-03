@@ -40,21 +40,28 @@ class Login extends Component {
       <div className="login">
         <h1>VGX Trading</h1>
         <h1>Log In</h1>
-        <form onSubmit={e => this.signIn(e, this.state.user)}>
-          <TextField
-            type="text"
-            value={this.state.user.email}
-            name="email"
-            onChange={this.handleChanges}
-            label="Email"
-          />
-          <TextField
-            type="password"
-            value={this.state.user.password}
-            name="password"
-            onChange={this.handleChanges}
-            label="Password"
-          />
+        <form
+          className="input-form"
+          onSubmit={e => this.signIn(e, this.state.user)}
+        >
+          <div className="field-container">
+            <TextField
+              type="text"
+              value={this.state.user.email}
+              name="email"
+              onChange={this.handleChanges}
+              label="Email"
+            />
+          </div>
+          <div className="field-container">
+            <TextField
+              type="password"
+              value={this.state.user.password}
+              name="password"
+              onChange={this.handleChanges}
+              label="Password"
+            />
+          </div>
           <Button type="submit" variant="contained">
             Sign In
           </Button>

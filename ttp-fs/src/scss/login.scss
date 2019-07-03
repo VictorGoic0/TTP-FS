@@ -2,17 +2,30 @@
 .signup {
   width: 350px;
   height: 450px;
-  margin: 0 auto;
+  margin: 200px auto auto auto;
   border: 1px solid black;
   border-radius: 8px;
+  .field-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
   h1 {
     font-size: 2.4rem;
+    width: 100%;
+    text-align: center;
   }
   h3 {
     font-size: 1.6rem;
   }
+  a {
+    text-decoration: none;
+  }
   span {
     text-decoration: none;
     color: blue;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

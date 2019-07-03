@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getTransactions } from "../actions";
 import Transaction from "./Transaction";
+import Spinner from "./Spinner";
 
 class Transactions extends Component {
   componentDidMount() {
@@ -13,7 +14,7 @@ class Transactions extends Component {
   render() {
     const { transactions, fetchingTransactions } = this.props;
     if (fetchingTransactions) {
-      return <h1>Loading...</h1>;
+      return <Spinner />;
     } else if (transactions.length === 0) {
       return (
         <div className="transactions">

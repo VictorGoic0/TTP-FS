@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getTransactions, fetchPrices } from "../actions";
 import Stock from "./Stock";
+import Spinner from "./Spinner";
 
 class Portfolio extends Component {
   componentDidMount() {
@@ -41,26 +42,24 @@ class Portfolio extends Component {
     const { fetchingTransactions, fetchingPrices, stockList } = this.props;
 
     if (fetchingTransactions || fetchingPrices) {
-      return <h1>Loading...</h1>;
+      return <Spinner />;
     } else {
       return (
-        <>
-          <div className="portfolio">
-            {stockList.length > 0 ? (
-              <h1>Portfolio (${this.portfolioValue().toFixed(2)})</h1>
-            ) : (
-              <h1>You do not own any stock yet</h1>
-            )}
-            {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
-            {stockList.map(stock => (
-              <Stock
-                key={stock.id}
-                stock={stock}
-                price={this.props.prices[stock.symbol]}
-              />
-            ))}
-          </div>
-        </>
+        <div className="portfolio">
+          {stockList.length > 0 ? (
+            <h1>Portfolio (${this.portfolioValue().toFixed(2)})</h1>
+          ) : (
+            <h1>You do not own any stock yet</h1>
+          )}
+          {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
+          {stockList.map(stock => (
+            <Stock
+              key={stock.id}
+              stock={stock}
+              price={this.props.prices[stock.symbol]}
+            />
+          ))}
+        </div>
       );
     }
   }

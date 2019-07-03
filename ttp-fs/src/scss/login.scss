@@ -5,10 +5,21 @@
   margin: 200px auto auto auto;
   border: 1px solid black;
   border-radius: 8px;
-  .field-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  .input-form {
+    input {
+      width: 330px;
+      font-size: 2rem;
+    }
+    .label {
+      font-size: 2rem;
+    }
+  }
+  button {
+    width: 240px;
+    height: 40px;
+    color: white;
+    background-color: $primary-blue;
+    font-size: 1.8rem;
   }
   h1 {
     font-size: 2.4rem;
@@ -21,7 +32,7 @@
   a {
     text-decoration: none;
   }
-  span {
+  .switch-span {
     text-decoration: none;
     color: blue;
     &:hover {

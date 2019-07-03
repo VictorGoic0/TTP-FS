@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signIn } from "../actions";
 import { Link } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
 
 class Login extends Component {
   state = {
@@ -44,24 +46,26 @@ class Login extends Component {
           className="input-form"
           onSubmit={e => this.signIn(e, this.state.user)}
         >
-          <div className="field-container">
-            <TextField
+          <FormControl>
+            <InputLabel className="label">Email</InputLabel>
+            <Input
+              required
               type="text"
               value={this.state.user.email}
               name="email"
               onChange={this.handleChanges}
-              label="Email"
             />
-          </div>
-          <div className="field-container">
-            <TextField
+          </FormControl>
+          <FormControl>
+            <InputLabel className="label">Password</InputLabel>
+            <Input
+              required
               type="password"
               value={this.state.user.password}
               name="password"
               onChange={this.handleChanges}
-              label="Password"
             />
-          </div>
+          </FormControl>
           <Button type="submit" variant="contained">
             Sign In
           </Button>
@@ -69,7 +73,7 @@ class Login extends Component {
         <h3>
           Don't Have An Account?{" "}
           <Link to="/signup">
-            <span>Sign Up</span>
+            <span className="switch-span">Sign Up</span>
           </Link>
         </h3>
       </div>

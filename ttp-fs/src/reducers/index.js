@@ -124,15 +124,27 @@ const reducer = (state = initialState, action) => {
           ...state.user,
           balance: state.user.balance - action.balance
         },
-        stockList: state.stockList.map(stock => {
-          if (stock.symbol === action.payload.symbol) {
-            const newStock = { ...stock };
-            newStock.quantity += action.payload.quantity;
-            return newStock;
-          } else {
-            return stock;
-          }
+        stockList: state.stockList.find(stock => {
+          return stock.symbol === action.payload.symbol;
         })
+          ? state.stockList.map(stock => {
+              if (stock.symbol === action.payload.symbol) {
+                const newStock = { ...stock };
+                newStock.quantity += action.payload.quantity;
+                return newStock;
+              } else {
+                return stock;
+              }
+            })
+          : [...state.stockList, action.payload],
+        prices: state.stockList.find(stock => {
+          return stock.symbol === action.payload.symbol;
+        })
+          ? state.prices
+          : {
+              ...state.prices,
+              [action.payload.symbol]: action.payload.price
+            }
       };
     case MAKE_TRANSACTION_FAILURE:
       return {

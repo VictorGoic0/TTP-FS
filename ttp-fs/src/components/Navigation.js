@@ -1,19 +1,24 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 import { NavLink } from "react-router-dom";
 
 const Navigation = props => {
   const logOut = () => {
     localStorage.clear();
-    props.history.push('/login')
-  }
+    props.history.push("/login");
+  };
   return (
     <nav className="navigation">
       <NavLink exact to="/">
-        Portfolio
+        <p>Portfolio</p>
       </NavLink>
-      <NavLink to="/transactions">Transactions</NavLink>
-      <NavLink to="/purchase">Buy Stock</NavLink>
-      <a onClick={logOut}>Log Out</a>
+      <NavLink to="/transactions">
+        {" "}
+        <p>Transactions</p>
+      </NavLink>
+      <NavLink to="/purchase">
+        <p>Buy Stock</p>
+      </NavLink>
+      <p onClick={logOut}>Log Out</p>
     </nav>
   );
 };

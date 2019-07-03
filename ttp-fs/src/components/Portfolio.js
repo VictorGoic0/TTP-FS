@@ -41,7 +41,6 @@ class Portfolio extends Component {
     const { fetchingTransactions, fetchingPrices, stockList } = this.props;
 
     if (fetchingTransactions || fetchingPrices) {
-      console.log("fetching");
       return <h1>Loading...</h1>;
     } else {
       return (

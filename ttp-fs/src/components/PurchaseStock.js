@@ -56,6 +56,14 @@ class PurchaseStock extends Component {
               .makeTransaction(finalTransaction)
               .then(res => {
                 alert("Transaction succeeded!");
+                this.setState({
+                  ...this.state,
+                  transaction: {
+                    ...this.state.transaction,
+                    symbol: "",
+                    quantity: ""
+                  }
+                });
               })
               .catch(err => {
                 alert(`Transaction failed ${err}.`);

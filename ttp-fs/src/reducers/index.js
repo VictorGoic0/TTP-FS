@@ -119,7 +119,10 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         makingTransaction: false,
-        transactions: [...state.transactions, action.payload]
+        transactions: [...state.transactions, action.payload],
+        user: {
+          ...state.user, balance: state.user.balance - action.balance
+        }
       };
     case MAKE_TRANSACTION_FAILURE:
       return {

@@ -101,10 +101,10 @@ export const MAKE_TRANSACTION_FAILURE = "MAKE_TRANSACTION_FAILURE";
 
 export const makeTransaction = transactionInfo => dispatch => {
   dispatch({ type: MAKE_TRANSACTION });
-  axiosAuth()
+  return axiosAuth()
     .post(`${endpoint}/api/transactions`, transactionInfo)
     .then(res => {
-      dispatch({ type: MAKE_TRANSACTION_SUCCESS, payload: res.data });
+      dispatch({ type: MAKE_TRANSACTION_SUCCESS, payload: res.data, balance: transactionInfo.quantity * transactionInfo.price });
     })
     .catch(err => {
       dispatch({

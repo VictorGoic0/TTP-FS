@@ -48,7 +48,11 @@ class PurchaseStock extends Component {
             finalTransaction.price = response.lastSalePrice;
             finalTransaction.sector = response.sector;
             finalTransaction.security_type = response.securityType;
-            this.props.makeTransaction(finalTransaction);
+            this.props.makeTransaction(finalTransaction).then(res => {
+              alert("Transaction succeeded!")
+            }).catch(err => {
+              alert(`Transaction failed ${err}.`)
+            })
           } else {
             alert("You do not have enough funds.");
           }

@@ -121,8 +121,18 @@ const reducer = (state = initialState, action) => {
         makingTransaction: false,
         transactions: [...state.transactions, action.payload],
         user: {
-          ...state.user, balance: state.user.balance - action.balance
-        }
+          ...state.user,
+          balance: state.user.balance - action.balance
+        },
+        stockList: state.stockList.map(stock => {
+          if (stock.symbol === action.payload.symbol) {
+            const newStock = { ...stock };
+            newStock.quantity += action.payload.quantity;
+            return newStock;
+          } else {
+            return stock;
+          }
+        })
       };
     case MAKE_TRANSACTION_FAILURE:
       return {

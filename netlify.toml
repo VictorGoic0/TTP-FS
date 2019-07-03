@@ -1,6 +1,6 @@
 [build]
 base = "/ttp-fs"
-publish = "/build"
+publish = "/ttp-fs/build"
 command = "yarn build"
 
 [[redirects]]

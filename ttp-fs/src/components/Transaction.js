@@ -4,7 +4,7 @@ const Transaction = props => {
   const { symbol, quantity, price } = props.transaction;
   return (
     <div className="transaction">
-      <h3>{symbol}</h3>
+      <h3>BUY ({symbol})</h3>
       <h3>
         {quantity} shares @ {price}
       </h3>

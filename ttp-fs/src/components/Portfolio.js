@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getTransactions, fetchPrices } from "../actions";
+import { getTransactions, fetchPrices, fetchMovement } from "../actions";
 import Stock from "./Stock";
 import Spinner from "./Spinner";
 
@@ -29,6 +29,7 @@ class Portfolio extends Component {
     // In order for the portfolio to display the most up to date price information, a request for that information must be made
     const symbols = this.props.stockList.map(stock => stock.symbol);
     this.props.fetchPrices(symbols);
+    // this.props.fetchMovement(symbols);
   };
 
   portfolioValue = () => {
@@ -76,5 +77,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTransactions, fetchPrices }
+  { getTransactions, fetchPrices, fetchMovement }
 )(Portfolio);

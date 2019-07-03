@@ -6,7 +6,7 @@ import Portfolio from "./components/Portfolio";
 import Transactions from "./components/Transactions";
 import PurchaseStock from "./components/PurchaseStock";
 import Navigation from "./components/Navigation";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App(props) {
@@ -14,11 +14,10 @@ function App(props) {
     <div className="app-container">
       {props.location.pathname === "/login" ||
       props.location.pathname === "/signup" ? null : (
-        <Navigation history={props.history}/>
+        <Navigation history={props.history} />
       )}
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route path="/*" render={() => <Redirect to="/" />} />
       <PrivateRoute exact path="/" component={Portfolio} />
       <PrivateRoute path="/transactions" component={Transactions} />
       <PrivateRoute path="/purchase" component={PurchaseStock} />

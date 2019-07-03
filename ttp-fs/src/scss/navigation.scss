@@ -1,5 +1,16 @@
 .navigation {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px auto 20px auto;
   a {
+    text-decoration: none;
+  }
+  p {
     font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

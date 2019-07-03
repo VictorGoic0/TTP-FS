@@ -7,7 +7,7 @@ const Stock = props => {
     <div className="stock">
       <h3>{symbol}</h3>
       <h3>{quantity} shares</h3>
-      <h3>${quantity * price}</h3>
+      <h3>${(quantity * price).toFixed(2)}</h3>
     </div>
   );
 };

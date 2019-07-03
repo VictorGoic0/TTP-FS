@@ -1,5 +1,5 @@
 [build]
-base = "/ttp-fs
+base = "/ttp-fs"
 publish = "/build"
 command = "yarn build"
 

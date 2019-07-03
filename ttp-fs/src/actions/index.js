@@ -104,7 +104,11 @@ export const makeTransaction = transactionInfo => dispatch => {
   return axiosAuth()
     .post(`${endpoint}/api/transactions`, transactionInfo)
     .then(res => {
-      dispatch({ type: MAKE_TRANSACTION_SUCCESS, payload: res.data, balance: transactionInfo.quantity * transactionInfo.price });
+      dispatch({
+        type: MAKE_TRANSACTION_SUCCESS,
+        payload: res.data,
+        balance: transactionInfo.quantity * transactionInfo.price
+      });
     })
     .catch(err => {
       dispatch({
@@ -140,5 +144,37 @@ export const fetchPrices = symbols => dispatch => {
     .catch(err => {
       console.error(err);
       dispatch({ type: FETCH_PRICES_FAILURE, payload: err.message });
+    });
+};
+
+export const FETCH_MOVEMENT = "FETCH_MOVEMENT";
+export const FETCH_MOVEMENT_SUCCESS = "FETCH_MOVEMENT_SUCCESS";
+export const FETCH_MOVEMENT_FAILURE = "FETCH_MOVEMENT_FAILURE";
+
+export const fetchMovement = symbols => dispatch => {
+  dispatch({ type: FETCH_MOVEMENT });
+  axios
+    .get(
+      `https://api.iextrading.com/1.0/deep/official-price?symbols=${symbols.join(
+        ","
+      )}`
+    )
+    .then(res => {
+      const results = res.data;
+      const table = {};
+      const length = results.length;
+      for (let i = 0; i < length; i++) {
+        if (results[i].symbol in table) {
+          continue;
+        } else {
+          table[results[i].symbol] = results[i];
+          // Not sure how to parse this yet, test requests to this endpoint return nothing.
+        }
+      }
+      dispatch({ type: FETCH_MOVEMENT_SUCCESS, payload: table });
+    })
+    .catch(err => {
+      console.error(err);
+      dispatch({ type: FETCH_MOVEMENT_FAILURE, payload: err.message });
     });
 };

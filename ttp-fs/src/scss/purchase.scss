@@ -1,5 +1,29 @@
 .purchase {
-  h2 {
-    font-size: 2.6rem;
+  h1 {
+    font-size: 3.6rem;
+    margin: 40px 0px;
+    text-align: center;
+  }
+  .purchase-form {
+    width: 400px;
+    height: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    button {
+      width: 240px;
+      height: 40px;
+      font-size: 1.8rem;
+      background-color: $primary-blue;
+      color: white;
+    }
+    input {
+      width: 330px;
+      font-size: 2rem;
+    }
+    .label {
+      font-size: 2rem;
+    }
   }
 }

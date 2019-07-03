@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchUser, makeTransaction } from "../actions";
 import axios from "axios";
+import Button from "@material-ui/core/Button";
+// import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
 
 class PurchaseStock extends Component {
   state = {
@@ -10,7 +15,7 @@ class PurchaseStock extends Component {
         ? this.props.user.id
         : localStorage.getItem("userID"),
       symbol: "",
-      quantity: 0
+      quantity: ""
     }
   };
 
@@ -44,15 +49,18 @@ class PurchaseStock extends Component {
         if (response) {
           if (balance >= quantity * response.lastSalePrice) {
             const finalTransaction = { ...transacInfo };
-            finalTransaction.quantity = Number(quantity)
+            finalTransaction.quantity = Number(quantity);
             finalTransaction.price = response.lastSalePrice;
             finalTransaction.sector = response.sector;
             finalTransaction.security_type = response.securityType;
-            this.props.makeTransaction(finalTransaction).then(res => {
-              alert("Transaction succeeded!")
-            }).catch(err => {
-              alert(`Transaction failed ${err}.`)
-            })
+            this.props
+              .makeTransaction(finalTransaction)
+              .then(res => {
+                alert("Transaction succeeded!");
+              })
+              .catch(err => {
+                alert(`Transaction failed ${err}.`);
+              });
           } else {
             alert("You do not have enough funds.");
           }
@@ -73,24 +81,34 @@ class PurchaseStock extends Component {
     } else {
       return (
         <div className="purchase">
-          <h2>Balance:</h2>
-          <h2>${balance.toFixed(2)}</h2>
-          <form onSubmit={e => this.makeTransaction(e, this.state.transaction)}>
-            <input
-              type="text"
-              value={this.state.transaction.symbol}
-              name="symbol"
-              placeholder="Symbol"
-              onChange={this.handleChanges}
-            />
-            <input
-              type="number"
-              value={this.state.transaction.quantity}
-              name="quantity"
-              placeeholder="Quantity"
-              onChange={this.handleChanges}
-            />
-            <button type="submit">BUY</button>
+          <h1>Balance - ${balance.toFixed(2)}</h1>
+          <form
+            className="purchase-form"
+            onSubmit={e => this.makeTransaction(e, this.state.transaction)}
+          >
+            <FormControl>
+              <InputLabel className="label">Symbol</InputLabel>
+              <Input
+                type="text"
+                value={this.state.transaction.symbol}
+                name="symbol"
+                onChange={this.handleChanges}
+                fullWidth
+              />
+            </FormControl>
+            <FormControl>
+              <InputLabel className="label">Quantity</InputLabel>
+              <Input
+                type="number"
+                value={this.state.transaction.quantity}
+                name="quantity"
+                onChange={this.handleChanges}
+                fullWidth
+              />
+            </FormControl>
+            <Button type="submit" variant="contained">
+              BUY
+            </Button>
           </form>
         </div>
       );

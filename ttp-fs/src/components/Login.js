@@ -26,7 +26,6 @@ class Login extends Component {
 
   signIn = (e, userInfo) => {
     e.preventDefault();
-    console.log(userInfo);
     this.props
       .signIn(userInfo)
       .then(res => {

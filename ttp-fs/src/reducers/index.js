@@ -16,7 +16,8 @@ import {
   MAKE_TRANSACTION_FAILURE,
   FETCH_PRICES,
   FETCH_PRICES_SUCCESS,
-  FETCH_PRICES_FAILURE
+  FETCH_PRICES_FAILURE,
+  LOG_OUT
 } from "../actions";
 
 const initialState = {
@@ -169,6 +170,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         fetchingPrices: false,
         error: action.payload
+      };
+    case LOG_OUT:
+      return {
+        ...initialState,
+        signedIn: false
       };
 
     default:

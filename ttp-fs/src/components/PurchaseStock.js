@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
+import Spinner from "./Spinner";
 
 class PurchaseStock extends Component {
   state = {
@@ -36,10 +37,10 @@ class PurchaseStock extends Component {
     });
   };
 
-  makeTransaction = (e, transacInfo) => {
+  makeTransaction = e => {
     e.preventDefault();
     // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
-    const { balance } = this.props.user; // User funds
+    const { balance, id } = this.props.user; // User funds
     const { quantity, symbol } = this.state.transaction;
     axios
       .get(`https://api.iextrading.com/1.0/tops?symbols=${symbol}`)
@@ -47,11 +48,14 @@ class PurchaseStock extends Component {
         const response = res.data[0];
         if (response) {
           if (balance >= quantity * response.lastSalePrice) {
-            const finalTransaction = { ...transacInfo };
-            finalTransaction.quantity = Number(quantity);
-            finalTransaction.price = response.lastSalePrice;
-            finalTransaction.sector = response.sector;
-            finalTransaction.security_type = response.securityType;
+            const finalTransaction = {
+              user_id: id,
+              quantity: Number(quantity),
+              symbol: response.symbol,
+              price: response.lastSalePrice,
+              sector: response.sector,
+              security_type: response.securityType
+            };
             this.props
               .makeTransaction(finalTransaction)
               .then(res => {
@@ -69,9 +73,11 @@ class PurchaseStock extends Component {
                 alert(`Transaction failed ${err}.`);
               });
           } else {
+            // If the IEX API returns a valid result, but the price of the stock * quantity of stock is greater than the user balance, then the user does not have enough funds.
             alert("You do not have enough funds.");
           }
         } else {
+          // If the IEX API does not return a result, then the provided symbol was invalid.
           alert("Please enter a valid symbol.");
         }
       })
@@ -84,15 +90,12 @@ class PurchaseStock extends Component {
     const { user, fetchingUser } = this.props;
     const { balance, id } = user;
     if (fetchingUser || !id) {
-      return <h1>Loading...</h1>;
+      return <Spinner />;
     } else {
       return (
         <div className="purchase">
           <h1>Balance - ${balance.toFixed(2)}</h1>
-          <form
-            className="purchase-form"
-            onSubmit={e => this.makeTransaction(e, this.state.transaction)}
-          >
+          <form className="purchase-form" onSubmit={this.makeTransaction}>
             <FormControl>
               <InputLabel className="label">Symbol</InputLabel>
               <Input

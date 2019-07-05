@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
+import Spinner from "./Spinner";
 
 class PurchaseStock extends Component {
   state = {
@@ -89,7 +90,7 @@ class PurchaseStock extends Component {
     const { user, fetchingUser } = this.props;
     const { balance, id } = user;
     if (fetchingUser || !id) {
-      return <h1>Loading...</h1>;
+      return <Spinner />;
     } else {
       return (
         <div className="purchase">

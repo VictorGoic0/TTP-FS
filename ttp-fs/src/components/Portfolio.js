@@ -19,7 +19,7 @@ class Portfolio extends Component {
           console.error(err);
         });
     } else if (this.props.stockList.length > 0) {
-      if (Object.keys(this.props.prices) === 0) {
+      if (Object.keys(this.props.prices).length === 0) {
         this.fetchPrices();
       }
     }

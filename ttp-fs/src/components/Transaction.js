@@ -6,7 +6,7 @@ const Transaction = props => {
     <div className="transaction">
       <h3>BUY ({symbol})</h3>
       <h3>
-        {quantity} shares @ {price}
+        {quantity} shares @ {price.toFixed(2)}
       </h3>
     </div>
   );

@@ -173,7 +173,8 @@ const reducer = (state = initialState, action) => {
       };
     case LOG_OUT:
       return {
-        ...initialState
+        ...initialState,
+        signedIn: false
       };
 
     default:

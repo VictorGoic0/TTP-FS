@@ -69,9 +69,11 @@ class PurchaseStock extends Component {
                 alert(`Transaction failed ${err}.`);
               });
           } else {
+            // If the IEX API returns a valid result, but the price of the stock * quantity of stock is greater than the user balance, then the user does not have enough funds.
             alert("You do not have enough funds.");
           }
         } else {
+          // If the IEX API does not return a result, then the provided symbol was invalid.
           alert("Please enter a valid symbol.");
         }
       })

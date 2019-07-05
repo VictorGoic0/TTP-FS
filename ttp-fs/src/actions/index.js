@@ -12,12 +12,12 @@ export const signUp = userInfo => dispatch => {
   return axios
     .post(`${endpoint}/api/auth/register/`, userInfo)
     .then(res => {
-      dispatch({ type: SIGN_UP_SUCCESS, payload: res.data.token });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userID", res.data.userID);
+      return dispatch({ type: SIGN_UP_SUCCESS, payload: res.data.token });
     })
     .catch(err => {
-      dispatch({
+      return dispatch({
         type: SIGN_UP_FAILURE,
         payload: `${err.message}. ${err.response.data.message}`
       });
@@ -33,12 +33,12 @@ export const signIn = userInfo => dispatch => {
   return axios
     .post(`${endpoint}/api/auth/login/`, userInfo)
     .then(res => {
-      dispatch({ type: SIGN_IN_SUCCESS, payload: res.data.token });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userID", res.data.userID);
+      return dispatch({ type: SIGN_IN_SUCCESS, payload: res.data.token });
     })
     .catch(err => {
-      dispatch({
+      return dispatch({
         type: SIGN_IN_FAILURE,
         payload: `${err.message}. ${err.response.data.message}`
       });
@@ -66,10 +66,10 @@ export const getTransactions = user_id => dispatch => {
         }
       }
       const portfolio = Object.values(table);
-      dispatch({ type: GET_TRANSACTIONS_SUCCESS, payload, portfolio });
+      return dispatch({ type: GET_TRANSACTIONS_SUCCESS, payload, portfolio });
     })
     .catch(err => {
-      dispatch({
+      return dispatch({
         type: GET_TRANSACTIONS_FAILURE,
         payload: `${err.message}. ${err.response.data.message}`
       });
@@ -104,14 +104,14 @@ export const makeTransaction = transactionInfo => dispatch => {
   return axiosAuth()
     .post(`${endpoint}/api/transactions`, transactionInfo)
     .then(res => {
-      dispatch({
+      return dispatch({
         type: MAKE_TRANSACTION_SUCCESS,
         payload: res.data,
         balance: transactionInfo.quantity * transactionInfo.price
       });
     })
     .catch(err => {
-      dispatch({
+      return dispatch({
         type: MAKE_TRANSACTION_FAILURE,
         payload: `${err.message}. ${err.response.data.message}`
       });

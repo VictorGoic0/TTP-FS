@@ -39,7 +39,7 @@ class PurchaseStock extends Component {
   makeTransaction = (e, transacInfo) => {
     e.preventDefault();
     // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
-    const { balance } = this.props.user; // User funds
+    const { balance, id } = this.props.user; // User funds
     const { quantity, symbol } = this.state.transaction;
     axios
       .get(`https://api.iextrading.com/1.0/tops?symbols=${symbol}`)
@@ -47,11 +47,14 @@ class PurchaseStock extends Component {
         const response = res.data[0];
         if (response) {
           if (balance >= quantity * response.lastSalePrice) {
-            const finalTransaction = { ...transacInfo };
-            finalTransaction.quantity = Number(quantity);
-            finalTransaction.price = response.lastSalePrice;
-            finalTransaction.sector = response.sector;
-            finalTransaction.security_type = response.securityType;
+            const finalTransaction = {
+              user_id: id,
+              quantity: Number(quantity),
+              symbol: response.symbol,
+              price: response.lastSalePrice,
+              sector: response.sector,
+              security_type: response.securityType
+            };
             this.props
               .makeTransaction(finalTransaction)
               .then(res => {

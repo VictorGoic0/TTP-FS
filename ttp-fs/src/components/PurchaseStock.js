@@ -36,7 +36,7 @@ class PurchaseStock extends Component {
     });
   };
 
-  makeTransaction = (e, transacInfo) => {
+  makeTransaction = e => {
     e.preventDefault();
     // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
     const { balance, id } = this.props.user; // User funds
@@ -94,10 +94,7 @@ class PurchaseStock extends Component {
       return (
         <div className="purchase">
           <h1>Balance - ${balance.toFixed(2)}</h1>
-          <form
-            className="purchase-form"
-            onSubmit={e => this.makeTransaction(e, this.state.transaction)}
-          >
+          <form className="purchase-form" onSubmit={this.makeTransaction}>
             <FormControl>
               <InputLabel className="label">Symbol</InputLabel>
               <Input

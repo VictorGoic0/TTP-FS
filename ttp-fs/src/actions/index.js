@@ -178,3 +178,12 @@ export const fetchMovement = symbols => dispatch => {
       dispatch({ type: FETCH_MOVEMENT_FAILURE, payload: err.message });
     });
 };
+
+export const LOG_OUT = "LOG_OUT";
+
+export const logOut = () => {
+  localStorage.clear();
+  return {
+    type: LOG_OUT
+  };
+};

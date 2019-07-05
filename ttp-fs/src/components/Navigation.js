@@ -1,9 +1,11 @@
 import React, { memo } from "react";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { logOut } from "../actions";
 
 const Navigation = props => {
   const logOut = () => {
-    localStorage.clear();
+    props.logOut();
     props.history.push("/login");
   };
   return (
@@ -23,4 +25,9 @@ const Navigation = props => {
   );
 };
 
-export default memo(Navigation);
+const MemNav = memo(Navigation);
+
+export default connect(
+  null,
+  { logOut }
+)(MemNav);

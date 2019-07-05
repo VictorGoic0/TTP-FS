@@ -172,7 +172,9 @@ const reducer = (state = initialState, action) => {
         error: action.payload
       };
     case LOG_OUT:
-      return initialState;
+      return {
+        ...initialState
+      };
 
     default:
       return state;

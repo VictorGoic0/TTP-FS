@@ -1,5 +1,4 @@
 import React from "react";
-import { Route } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Portfolio from "./components/Portfolio";
@@ -17,11 +16,19 @@ function App(props) {
         <Navigation history={props.history} />
       )}
       <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-        <PrivateRoute exact path="/" component={Portfolio} />
-        <PrivateRoute path="/transactions" component={Transactions} />
-        <PrivateRoute path="/purchase" component={PurchaseStock} />
+        <PrivateRoute path="/login" component={Login} testPrivate={false} />
+        <PrivateRoute path="/signup" component={Signup} testPrivate={false} />
+        <PrivateRoute exact path="/" component={Portfolio} testPrivate={true} />
+        <PrivateRoute
+          path="/transactions"
+          component={Transactions}
+          testPrivate={true}
+        />
+        <PrivateRoute
+          path="/purchase"
+          component={PurchaseStock}
+          testPrivate={true}
+        />
         <Redirect from="*" to="/" />
       </Switch>
     </div>

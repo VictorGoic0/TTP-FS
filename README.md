@@ -21,7 +21,7 @@
 
 - Node
 - Express
-- PostgreSQL (Production)
+- PostgreSQL
 - Knex
 - Knex Cleaner
 - Bcryptjs
@@ -60,7 +60,7 @@ This project is a RESTful API built using Node and Express. The purpose of this 
 
 ---
 
-#### POST `/auth/login`
+#### POST `/api/auth/login`
 
 ##### Required (unless marked optional):
 
@@ -94,7 +94,7 @@ Body:
 
 ---
 
-#### POST `/auth/register`
+#### POST `/api/auth/register`
 
 ##### Required (unless marked optional):
 

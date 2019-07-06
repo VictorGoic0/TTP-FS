@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getTransactions, fetchPrices, fetchMovement } from "../actions";
-import Stock from "./Stock";
+import StockList from "./StockList";
 import Spinner from "./Spinner";
 
 class Portfolio extends Component {
@@ -40,7 +40,12 @@ class Portfolio extends Component {
   };
 
   render() {
-    const { fetchingTransactions, fetchingPrices, stockList } = this.props;
+    const {
+      fetchingTransactions,
+      fetchingPrices,
+      stockList,
+      prices
+    } = this.props;
 
     if (fetchingTransactions || fetchingPrices) {
       return <Spinner />;
@@ -53,13 +58,7 @@ class Portfolio extends Component {
             <h1>You do not own any stock yet</h1>
           )}
           {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
-          {stockList.map(stock => (
-            <Stock
-              key={stock.id}
-              stock={stock}
-              price={this.props.prices[stock.symbol]}
-            />
-          ))}
+          <StockList stockList={stockList} prices={prices} />
         </div>
       );
     }

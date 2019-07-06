@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getTransactions } from "../actions";
-import Transaction from "./Transaction";
+import TransactionList from "./TransactionList";
 import Spinner from "./Spinner";
 
 class Transactions extends Component {
@@ -22,14 +22,7 @@ class Transactions extends Component {
         </div>
       );
     } else {
-      return (
-        <div className="transactions">
-          <h1>Transactions</h1>
-          {transactions.map(transaction => (
-            <Transaction key={transaction.id} transaction={transaction} />
-          ))}
-        </div>
-      );
+      return <TransactionList transactions={transactions} />;
     }
   }
 }

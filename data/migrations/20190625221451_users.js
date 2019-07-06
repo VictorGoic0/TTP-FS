@@ -25,6 +25,7 @@ exports.up = function(knex, Promise) {
       table.string("security_type", 30).notNullable();
       table.float("price").notNullable();
       table.integer("quantity").notNullable();
+      table.timestamps(true, true);
     });
 };
 

@@ -33,7 +33,17 @@
 
 # Running The Project <a name="runningProject"></a>
 
-If you would like to run this project locally, `cd` into the repository and run `yarn`. This will install the needed dependencies. Next you can run either `yarn start` to run the server using node or `yarn server` to run the server using nodemon. The purpose of using nodemon is to restart the server any time you make a change and save.
+If you would like to run this project locally, `cd` into the repository and run `yarn`. This will install the needed dependencies. Next you can run either `yarn start` to run the server using node or `yarn server` to run the server using nodemon. The purpose of using nodemon is to restart the server any time you make a change and save. **IMPORTANT** If you plan on running the Frontend client locally, please remember to run the server locally as well. Create a `.env` file in the root directory, and set the SECRET and PORT as desired. Running the API's database locally requires either a local PostgreSQL database OR credentials to an RDS database. Once connected, run the command `yarn knex migrate:latest` to run migrations. The API is now good to go. For the Frontend, create a `.env` file in the `/ttp-fs` directory, and set `REACT_APP_BACKENDPOINT` to the URL of your local API, which is most likely `http://localhost:4000`, or if you set the PORT to something like 5000, it will be ``http://localhost:5000`. Your local client is now ready to go.
+
+Alternatively, the Frontend can be accessed via its Netlify deployment. Here are the `.env` variables I used for local development, including the credentials to a development RDS database (this will work locally for anybody, as long as they are connected to the internet). These variables can be freely copy pasted into a `.env` file.
+
+- PORT=5000
+- SECRET=KEEP IT SECRET, KEEP IT SALTY
+- DB_DEV_HOST=ttpbackend-dev.crcnneyou5yk.us-east-1.rds.amazonaws.com
+- DB_DEV_DATABASE=ttpbackenddev
+- DB_DEV_USER=victorgoico
+- DB_DEV_PASSWORD=ttpbackend2019
+- DB_DEV_PORT=5432
 
 # Restrictions <a name="restrictions"></a>
 

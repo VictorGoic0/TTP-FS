@@ -58,11 +58,19 @@ export const getTransactions = user_id => dispatch => {
       const table = {};
       const length = payload.length;
       for (let i = 0; i < length; i++) {
+        const type = payload[i].transaction_type;
         const symbol = payload[i].symbol;
         if (symbol in table) {
-          table[symbol].quantity += payload[i].quantity;
+          if (type === "BUY") {
+            table[symbol].quantity += payload[i].quantity;
+          } else {
+            table[symbol].quantity -= payload[i].quantity;
+          }
         } else {
           table[symbol] = { ...payload[i] };
+          if (type === "SELL") {
+            table[symbol].quantity = -payload[i].quantity;
+          }
         }
       }
       const portfolio = Object.values(table);

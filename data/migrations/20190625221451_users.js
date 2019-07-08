@@ -20,6 +20,7 @@ exports.up = function(knex, Promise) {
         .notNullable()
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
+      table.string("transaction_type", 6).notNullable();
       table.string("symbol", 10).notNullable();
       table.string("sector", 30).notNullable();
       table.string("security_type", 30).notNullable();

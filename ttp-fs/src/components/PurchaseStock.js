@@ -54,7 +54,8 @@ class PurchaseStock extends Component {
               symbol: response.symbol,
               price: response.lastSalePrice,
               sector: response.sector,
-              security_type: response.securityType
+              security_type: response.securityType,
+              transaction_type: "BUY"
             };
             this.props
               .makeTransaction(finalTransaction)

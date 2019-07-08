@@ -17,6 +17,9 @@ import {
   FETCH_PRICES,
   FETCH_PRICES_SUCCESS,
   FETCH_PRICES_FAILURE,
+  FETCH_OPENINGS,
+  FETCH_OPENINGS_SUCCESS,
+  FETCH_OPENINGS_FAILURE,
   LOG_OUT
 } from "../actions";
 
@@ -26,9 +29,11 @@ const initialState = {
   signedIn: localStorage.getItem("token") ? true : false,
   fetchingTransactions: false,
   fetchingPrices: false,
+  fetchingOpenings: false,
   transactions: [],
   stockList: [],
   prices: {},
+  openings: {},
   user: {},
   error: null
 };
@@ -181,6 +186,24 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         fetchingPrices: false,
+        error: action.payload
+      };
+    case FETCH_OPENINGS:
+      return {
+        ...state,
+        fetchingOpenings: true,
+        error: null
+      };
+    case FETCH_OPENINGS_SUCCESS:
+      return {
+        ...state,
+        fetchingOpenings: false,
+        openings: action.payload
+      };
+    case FETCH_OPENINGS_FAILURE:
+      return {
+        ...state,
+        fetchingOpenings: false,
         error: action.payload
       };
     case LOG_OUT:

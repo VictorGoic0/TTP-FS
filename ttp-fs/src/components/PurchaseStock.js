@@ -43,7 +43,9 @@ class PurchaseStock extends Component {
     const { balance, id } = this.props.user; // User funds
     const { quantity, symbol } = this.state.transaction;
     axios
-      .get(`https://api.iextrading.com/1.0/tops?symbols=${symbol}`)
+      .get(
+        `https://api.iextrading.com/1.0/tops?filter=symbol,sector,securityType,lastSalePrice&symbols=${symbol}`
+      )
       .then(res => {
         const response = res.data[0];
         if (response) {

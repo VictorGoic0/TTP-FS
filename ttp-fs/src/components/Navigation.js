@@ -20,6 +20,9 @@ const Navigation = props => {
       <NavLink to="/purchase">
         <p>Buy Stock</p>
       </NavLink>
+      <NavLink to="/sell">
+        <p>Sell Stock</p>
+      </NavLink>
       <p onClick={logOut}>Log Out</p>
     </nav>
   );

@@ -12,7 +12,7 @@ import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Spinner from "./Spinner";
 
-class PurchaseStock extends Component {
+class SellStock extends Component {
   state = {
     transaction: {
       user_id: this.props.user.id
@@ -150,4 +150,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { fetchUser, makeTransaction, getTransactions, fetchPrices }
-)(PurchaseStock);
+)(SellStock);

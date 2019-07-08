@@ -37,10 +37,10 @@
 
 - React
 - React-DOM
-- React-Redux
 - React-Router-DOM
 - React-Scripts
 - Redux
+- React-Redux
 - Redux Logger
 - Redux Thunk
 - Node-Sass
@@ -63,6 +63,8 @@ DB_DEV_PASSWORD=ttpbackend2019
 DB_DEV_PORT=5432
 ```
 
+Running `yarn knex migrate:latest` is not necessary if using these credentials, because the database is already created.
+
 For the `.env` of the Frontend, the variables should look like this
 
 ```
@@ -77,6 +79,8 @@ If you would like to make a request to the users endpoint, a valid **JSON web to
 
 This project is a trading app powered by the IEX API. The Backend is a REST API built using Node and Express. User registration, login, and fetching or making transactions are handled here. The Backend was deployed using `Elastic Beanstalk`. Below you will find instructions on how to make requests to the API, as well as the data schema for the database migrations. The Frontend client is a SPA built using React. The Frontend was deployed using `Netlify`.
 
+## Backend
+
 - The server is run using Node.
 - Express is a minimalist Node web application framework for building APIs.
 - PostgreSQL is the database used for production. I used Amazon's `Relational Database Service` for generating development and production PostgreSQL databases.
@@ -87,6 +91,18 @@ This project is a trading app powered by the IEX API. The Backend is a REST API 
 - Helmet adds a base layer of security by hiding basic info about the API when interacting with it.
 - Dotenv allows the API to interact with environment variables.
 - Cors is a dependency used to allow Cross Origin Resource Sharing. This allows the Frontend client to interact with the Backend.
+
+## Frontend
+
+- React is a JavaScript library for creating User Interfaces.
+- React-Router-DOM allows for easy handling of routes.
+- Redux is a state-management tool.
+- React-Redux allows Redux to be used with React.
+- Redux Logger will log every action that as it is dispatched.
+- Redux Thunk allows the use of more complex, asynchronous action creators.
+- Node-Sass is a library that allows React components to be styled using SASS.
+- Axios is a library for making HTTP requests.
+- Material UI is a component library.
 
 # Endpoints (for frontend usage) <a name="frontend"></a>
 

@@ -37,18 +37,28 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", authorization, async (req, res) => {
   const transaction = req.body;
-  const { user_id, quantity, price } = transaction;
+  const { user_id, quantity, price, transaction_type } = transaction;
   const total = quantity * price;
   try {
     const newTransaction = await db.create(transaction);
     if (newTransaction) {
       const user = await Users.findById(user_id);
-      const updatedUser = await Users.update(
-        { balance: user.balance - total },
-        user_id
-      );
-      if (updatedUser) {
-        res.status(201).json(newTransaction);
+      if (transaction_type === "BUY") {
+        const updatedUser = await Users.update(
+          { balance: user.balance - total },
+          user_id
+        );
+        if (updatedUser) {
+          res.status(201).json(newTransaction);
+        }
+      } else if (transaction_type === "SELL") {
+        const updatedUser = await Users.update(
+          { balance: user.balance + total },
+          user_id
+        );
+        if (updatedUser) {
+          res.status(201).json(newTransaction);
+        }
       }
     }
   } catch (error) {

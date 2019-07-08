@@ -56,16 +56,23 @@ export const getTransactions = user_id => dispatch => {
     .then(res => {
       const payload = res.data;
       const table = {};
-      const length = payload.length;
-      for (let i = 0; i < length; i++) {
-        const symbol = payload[i].symbol;
+      for (let stock of payload) {
+        const type = stock.transaction_type;
+        const symbol = stock.symbol;
         if (symbol in table) {
-          table[symbol].quantity += payload[i].quantity;
+          if (type === "BUY") {
+            table[symbol].quantity += stock.quantity;
+          } else {
+            table[symbol].quantity -= stock.quantity;
+          }
         } else {
-          table[symbol] = { ...payload[i] };
+          table[symbol] = { ...stock };
         }
       }
-      const portfolio = Object.values(table);
+      const values = Object.values(table);
+      const portfolio = values.filter(stock => {
+        return stock.quantity > 0;
+      });
       return dispatch({ type: GET_TRANSACTIONS_SUCCESS, payload, portfolio });
     })
     .catch(err => {

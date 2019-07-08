@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser, makeTransaction } from "../actions";
-import axios from "axios";
+import {
+  fetchUser,
+  getTransactions,
+  fetchPrices,
+  makeTransaction
+} from "../actions";
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import Spinner from "./Spinner";
 
-class PurchaseStock extends Component {
+class SellStock extends Component {
   state = {
     transaction: {
       user_id: this.props.user.id
@@ -26,6 +30,21 @@ class PurchaseStock extends Component {
     if (!this.props.user.id) {
       this.props.fetchUser(user_id);
     }
+    if (this.props.stockList.length === 0) {
+      this.props
+        .getTransactions(user_id)
+        .then(() => {
+          this.fetchPrices();
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    } else if (
+      this.props.stockList.length > 0 &&
+      Object.keys(this.props.prices).length === 0
+    ) {
+      this.fetchPrices();
+    }
   }
 
   handleChanges = e => {
@@ -37,54 +56,53 @@ class PurchaseStock extends Component {
     });
   };
 
+  fetchPrices = () => {
+    const symbols = this.props.stockList.map(stock => stock.symbol);
+    this.props.fetchPrices(symbols);
+  };
+
   makeTransaction = e => {
     e.preventDefault();
     // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
-    const { balance, id } = this.props.user; // User funds
-    const { quantity, symbol } = this.state.transaction;
-    axios
-      .get(`https://api.iextrading.com/1.0/tops?symbols=${symbol}`)
-      .then(res => {
-        const response = res.data[0];
-        if (response) {
-          if (balance >= quantity * response.lastSalePrice) {
-            const finalTransaction = {
-              user_id: id,
-              quantity: Number(quantity),
-              symbol: response.symbol,
-              price: response.lastSalePrice,
-              sector: response.sector,
-              security_type: response.securityType,
-              transaction_type: "BUY"
-            };
-            this.props
-              .makeTransaction(finalTransaction)
-              .then(res => {
-                alert("Transaction succeeded!");
-                this.setState({
-                  ...this.state,
-                  transaction: {
-                    ...this.state.transaction,
-                    symbol: "",
-                    quantity: ""
-                  }
-                });
-              })
-              .catch(err => {
-                alert(`Transaction failed ${err}.`);
-              });
-          } else {
-            // If the IEX API returns a valid result, but the price of the stock * quantity of stock is greater than the user balance, then the user does not have enough funds.
-            alert("You do not have enough funds.");
-          }
-        } else {
-          // If the IEX API does not return a result, then the provided symbol was invalid.
-          alert("Please enter a valid symbol.");
-        }
-      })
-      .catch(err => {
-        console.error(err);
+    const { id } = this.props.user; // User funds
+    const { quantity } = this.state.transaction;
+    const symbol = this.state.transaction.symbol.toUpperCase();
+    if (symbol in this.props.prices) {
+      const stock = this.props.stockList.find(stock => {
+        return stock.symbol === symbol;
       });
+      if (stock.quantity >= quantity) {
+        const finalTransaction = {
+          user_id: id,
+          quantity: Number(quantity),
+          price: this.props.prices[symbol],
+          symbol: stock.symbol,
+          sector: stock.sector,
+          security_type: stock.security_type,
+          transaction_type: "SELL"
+        };
+        this.props
+          .makeTransaction(finalTransaction)
+          .then(res => {
+            alert("Transaction succeeded!");
+            this.setState({
+              ...this.state,
+              transaction: {
+                ...this.state.transaction,
+                symbol: "",
+                quantity: ""
+              }
+            });
+          })
+          .catch(err => {
+            alert(`Transaction failed ${err}.`);
+          });
+      } else {
+        alert("You are trying to sell more of this stock than you own.");
+      }
+    } else {
+      alert("You do not own this stock.");
+    }
   };
 
   render() {
@@ -118,7 +136,7 @@ class PurchaseStock extends Component {
               />
             </FormControl>
             <Button type="submit" variant="contained">
-              BUY
+              SELL
             </Button>
           </form>
         </div>
@@ -129,11 +147,13 @@ class PurchaseStock extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
+  stockList: state.stockList,
+  prices: state.prices,
   fetchingUser: state.fetchingUser,
   error: state.error
 });
 
 export default connect(
   mapStateToProps,
-  { fetchUser, makeTransaction }
-)(PurchaseStock);
+  { fetchUser, makeTransaction, getTransactions, fetchPrices }
+)(SellStock);

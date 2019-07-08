@@ -59,13 +59,38 @@ class PurchaseStock extends Component {
     e.preventDefault();
     // Make request to IEX API and check price. If quantity * price < user balance, then make the transaction.
     const { id } = this.props.user; // User funds
-    const { quantity, symbol } = this.state.transaction;
+    const { quantity } = this.state.transaction;
+    const symbol = this.state.transaction.symbol.toUpperCase();
     if (symbol in this.props.prices) {
       const stock = this.props.stockList.find(stock => {
-        return stock.symbol === symbol.toUpperCase();
+        return stock.symbol === symbol;
       });
       if (stock.quantity >= quantity) {
-        // Sell
+        const finalTransaction = {
+          user_id: id,
+          quantity: Number(quantity),
+          price: this.props.prices[symbol],
+          symbol: stock.symbol,
+          sector: stock.sector,
+          security_type: stock.securityType,
+          transaction_type: "SELL"
+        };
+        this.props
+          .makeTransaction(finalTransaction)
+          .then(res => {
+            alert("Transaction succeeded!");
+            this.setState({
+              ...this.state,
+              transaction: {
+                ...this.state.transaction,
+                symbol: "",
+                quantity: ""
+              }
+            });
+          })
+          .catch(err => {
+            alert(`Transaction failed ${err}.`);
+          });
       } else {
         alert("You are trying to sell more of this stock than you own.");
       }

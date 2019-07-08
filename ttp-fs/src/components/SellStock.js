@@ -31,9 +31,15 @@ class SellStock extends Component {
       this.props.fetchUser(user_id);
     }
     if (this.props.stockList.length === 0) {
-      this.props.getTransactions(user_id);
-    }
-    if (
+      this.props
+        .getTransactions(user_id)
+        .then(() => {
+          this.fetchPrices();
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    } else if (
       this.props.stockList.length > 0 &&
       Object.keys(this.props.prices).length === 0
     ) {
@@ -72,7 +78,7 @@ class SellStock extends Component {
           price: this.props.prices[symbol],
           symbol: stock.symbol,
           sector: stock.sector,
-          security_type: stock.securityType,
+          security_type: stock.security_type,
           transaction_type: "SELL"
         };
         this.props

@@ -33,6 +33,7 @@ const initialState = {
   transactions: [],
   stockList: [],
   prices: {},
+  openings: {},
   user: {},
   error: null
 };

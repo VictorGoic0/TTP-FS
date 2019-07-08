@@ -162,23 +162,22 @@ export const FETCH_OPENINGS_FAILURE = "FETCH_OPENINGS_FAILURE";
 
 export const fetchOpenings = symbols => dispatch => {
   dispatch({ type: FETCH_OPENINGS });
-  const table = {}
+  const table = {};
   for (let symbol of symbols) {
     axios
-    .get(
-      `https://api.iextrading.com/1.0/deep/official-price?symbols=${symbol}`
-    ) .then(res => {
-      const result = res.data;
-      if (result[symbol] in table) {
-        continue
-      } else {
-        table[symbol] = result[symbol]
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      dispatch({ type: FETCH_OPENINGS_FAILURE, payload: err.message });
-    });
+      .get(
+        `https://api.iextrading.com/1.0/deep/official-price?symbols=${symbol}`
+      )
+      .then(res => {
+        const result = res.data;
+        if (result[symbol].priceType === "Open") {
+          table[symbol] = { ...result[symbol] };
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        dispatch({ type: FETCH_OPENINGS_FAILURE, payload: err.message });
+      });
   }
   // This runs when the for loop completes. The official price endpoint can only take 1 symbol at a time, so multiple requests must be made.
   dispatch({ type: FETCH_OPENINGS_SUCCESS, payload: table });

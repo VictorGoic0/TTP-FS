@@ -44,7 +44,8 @@ class Portfolio extends Component {
       fetchingTransactions,
       fetchingPrices,
       stockList,
-      prices
+      prices,
+      openings
     } = this.props;
 
     if (fetchingTransactions || fetchingPrices) {
@@ -58,7 +59,11 @@ class Portfolio extends Component {
             <h1>You do not own any stock yet</h1>
           )}
           {/* Loop over stockList here and create a row entry for each, pass down the needed price from prices */}
-          <StockList stockList={stockList} prices={prices} />
+          <StockList
+            stockList={stockList}
+            prices={prices}
+            openings={openings}
+          />
         </div>
       );
     }
@@ -70,6 +75,7 @@ const mapStateToProps = state => ({
   fetchingTransactions: state.fetchingTransactions,
   fetchingPrices: state.fetchingPrices,
   stockList: state.stockList,
+  openings: state.openings,
   prices: state.prices,
   error: state.error
 });

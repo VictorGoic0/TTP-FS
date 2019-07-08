@@ -121,18 +121,30 @@ const reducer = (state = initialState, action) => {
         ...state,
         makingTransaction: false,
         transactions: [...state.transactions, action.payload],
-        user: {
-          ...state.user,
-          balance: state.user.balance - action.balance
-        },
+        user:
+          action.payload.transaction_type === "BUY"
+            ? {
+                ...state.user,
+                balance: state.user.balance - action.balance
+              }
+            : {
+                ...state.user,
+                balance: state.user.balance + action.balance
+              },
         stockList: state.stockList.find(stock => {
           return stock.symbol === action.payload.symbol;
         })
           ? state.stockList.map(stock => {
               if (stock.symbol === action.payload.symbol) {
                 const newStock = { ...stock };
-                newStock.quantity += action.payload.quantity;
-                return newStock;
+                if (action.payload.transaction_type === "BUY") {
+                  newStock.quantity += action.payload.quantity;
+                } else {
+                  newStock.quantity -= action.payload.quantity;
+                }
+                if (newStock.quantity > 0) {
+                  return newStock;
+                }
               } else {
                 return stock;
               }

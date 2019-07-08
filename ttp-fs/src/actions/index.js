@@ -156,35 +156,32 @@ export const fetchPrices = symbols => dispatch => {
     });
 };
 
-export const FETCH_MOVEMENT = "FETCH_MOVEMENT";
-export const FETCH_MOVEMENT_SUCCESS = "FETCH_MOVEMENT_SUCCESS";
-export const FETCH_MOVEMENT_FAILURE = "FETCH_MOVEMENT_FAILURE";
+export const FETCH_OPENINGS = "FETCH_OPENINGS";
+export const FETCH_OPENINGS_SUCCESS = "FETCH_OPENINGS_SUCCESS";
+export const FETCH_OPENINGS_FAILURE = "FETCH_OPENINGS_FAILURE";
 
-export const fetchMovement = symbols => dispatch => {
-  dispatch({ type: FETCH_MOVEMENT });
-  axios
+export const fetchOpenings = symbols => dispatch => {
+  dispatch({ type: FETCH_OPENINGS });
+  const table = {}
+  for (let symbol of symbols) {
+    axios
     .get(
-      `https://api.iextrading.com/1.0/deep/official-price?symbols=${symbols.join(
-        ","
-      )}`
-    )
-    .then(res => {
-      const results = res.data;
-      const table = {};
-      for (let stock of results) {
-        if (stock.symbol in table) {
-          continue;
-        } else {
-          table[stock.symbol] = { ...stock };
-          // Not sure how to parse this yet, test requests to this endpoint return nothing.
-        }
+      `https://api.iextrading.com/1.0/deep/official-price?symbols=${symbol}`
+    ) .then(res => {
+      const result = res.data;
+      if (result[symbol] in table) {
+        continue
+      } else {
+        table[symbol] = result[symbol]
       }
-      dispatch({ type: FETCH_MOVEMENT_SUCCESS, payload: table });
     })
     .catch(err => {
       console.error(err);
-      dispatch({ type: FETCH_MOVEMENT_FAILURE, payload: err.message });
+      dispatch({ type: FETCH_OPENINGS_FAILURE, payload: err.message });
     });
+  }
+  // This runs when the for loop completes. The official price endpoint can only take 1 symbol at a time, so multiple requests must be made.
+  dispatch({ type: FETCH_OPENINGS_SUCCESS, payload: table });
 };
 
 export const LOG_OUT = "LOG_OUT";

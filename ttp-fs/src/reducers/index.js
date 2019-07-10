@@ -139,21 +139,23 @@ const reducer = (state = initialState, action) => {
         stockList: state.stockList.find(stock => {
           return stock.symbol === action.payload.symbol;
         })
-          ? state.stockList.map(stock => {
-              if (stock.symbol === action.payload.symbol) {
-                const newStock = { ...stock };
-                if (action.payload.transaction_type === "BUY") {
-                  newStock.quantity += action.payload.quantity;
+          ? state.stockList
+              .map(stock => {
+                if (stock.symbol === action.payload.symbol) {
+                  const newStock = { ...stock };
+                  if (action.payload.transaction_type === "BUY") {
+                    newStock.quantity += action.payload.quantity;
+                  } else {
+                    newStock.quantity -= action.payload.quantity;
+                  }
+                  if (newStock.quantity > 0) {
+                    return newStock;
+                  }
                 } else {
-                  newStock.quantity -= action.payload.quantity;
+                  return stock;
                 }
-                if (newStock.quantity > 0) {
-                  return newStock;
-                }
-              } else {
-                return stock;
-              }
-            })
+              })
+              .filter(stock => stock)
           : [...state.stockList, action.payload],
         prices: state.stockList.find(stock => {
           return stock.symbol === action.payload.symbol;

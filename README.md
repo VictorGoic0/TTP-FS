@@ -74,6 +74,7 @@ REACT_APP_BACKENDPOINT=http://localhost:4000
 # Restrictions <a name="restrictions"></a>
 
 If you would like to make a request to the users endpoint, a valid **JSON web token** is required in your request headers.authorization. For transactions, making a **GET** request does not require a **JSON web token**, but **POST, DEL,** and **PUT** requests do.
+**DISCLAIMER** Due to the limitations of the IEX API, buying stock is not possible then the `/tops` endpoint is down. This happens regularly on the weekends, as well as very late at night. Selling should work fine all the time, however.
 
 # Description <a name="description"></a>
 

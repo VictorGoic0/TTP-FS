@@ -75,6 +75,8 @@ REACT_APP_BACKENDPOINT=http://localhost:4000
 
 If you would like to make a request to the users endpoint, a valid **JSON web token** is required in your request headers.authorization. For transactions, making a **GET** request does not require a **JSON web token**, but **POST, DEL,** and **PUT** requests do.
 
+*** **DISCLAIMER** *** Due to the limitations of the IEX API, buying stock is not possible when the `/tops` endpoint is down. This happens regularly on the weekends, as well as very late at night. Selling should work fine all the time, however.
+
 # Description <a name="description"></a>
 
 This project is a trading app powered by the IEX API. The Backend is a REST API built using Node and Express. User registration, login, and fetching or making transactions are handled here. The Backend was deployed using `Elastic Beanstalk`. Below you will find instructions on how to make requests to the API, as well as the data schema for the database migrations. The Frontend client is a SPA built using React. The Frontend was deployed using `Netlify`.

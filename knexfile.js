@@ -1,35 +1,36 @@
 require("dotenv").config();
+
+const localPgConnection = {
+  host: "localhost",
+  database: "instagram",
+  user: "victor",
+  password: "pass"
+};
+
+const dbConnection = process.env.DATABASE_URL || localPgConnection;
+
 module.exports = {
   development: {
-    client: "pg",
+    client: "sqlite3",
     connection: {
-      host: process.env.DB_DEV_HOST || "localhost",
-      database: process.env.DB_DEV_DATABASE || "rxid",
-      user: process.env.DB_DEV_USER || "admin",
-      password: process.env.DB_DEV_PASSWORD || "pass",
-      port: process.env.DB_DEV_PORT || "5432"
+      filename: "./data/vgx.sqlite3"
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    useNullAsDefault: true,
     migrations: {
-      tableName: "knex_migrations",
       directory: "./data/migrations"
     },
     seeds: {
       directory: "./data/seeds"
+    },
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run("PRAGMA foreign_keys = ON", done); // enforce FK
+      }
     }
   },
   production: {
     client: "pg",
-    connection: {
-      host: process.env.DB_PROD_HOST || "localhost",
-      database: process.env.DB_PROD_DATABASE || "rxid",
-      user: process.env.DB_PROD_USER || "admin",
-      password: process.env.DB_PROD_PASSWORD || "pass",
-      port: process.env.DB_PROD_PORT || "5432"
-    },
+    connection: dbConnection + "?ssl=true",
     pool: {
       min: 2,
       max: 10
